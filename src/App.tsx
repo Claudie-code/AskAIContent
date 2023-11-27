@@ -1,26 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Parameters from "./components/Parameters";
+import Generate from "./components/Generate";
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="relative m-auto min-h-full max-w-6xl p-4">
+        <Navbar />
+        <Routes>
+          <Route path="/" Component={Parameters} />
+          <Route path="/generate-article" Component={Generate} />
+        </Routes>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
