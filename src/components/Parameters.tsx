@@ -74,13 +74,52 @@ const Parameters: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    // Ajouter la logique pour appliquer les paramètres, par exemple, en envoyant une requête à votre backend
-    console.log("Parameters applied:", {
+    // Construire l'objet avec les paramètres à envoyer
+    const dataToSend = {
       articleLength,
       tone,
       language,
       topic,
-    });
+    };
+
+    // Utiliser fetch pour envoyer une requête POST vers votre backend local
+    fetch("http://localhost:3000/generate-article", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // Ajouter d'autres en-têtes si nécessaire
+      },
+      body: JSON.stringify(dataToSend),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Vérifier si la réponse est positive
+        if (data && data.finish_reason === "stop") {
+          // Récupérer le contenu de l'article généré
+          const generatedArticle = data.message.content;
+
+          // Faire quelque chose avec l'article généré, par exemple, l'afficher dans la console
+          console.log("Article généré:", generatedArticle);
+
+          // Ajouter d'autres logiques de traitement si nécessaire
+        } else {
+          console.error(
+            "La réponse du serveur ne contient pas les données attendues.",
+          );
+        }
+      })
+      .catch((error) => {
+        console.error(
+          "Erreur lors de la communication avec le serveur:",
+          error.message,
+        );
+        // Gérer les erreurs selon vos besoins
+      });
   };
 
   return (
