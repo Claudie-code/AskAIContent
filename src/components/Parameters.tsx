@@ -1,7 +1,7 @@
 // src/components/Parameters.tsx
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
-
+import { useArticle } from "../context/ArticleContext";
 const Parameters: React.FC = () => {
   const [articleLength, setArticleLength] = useState<number>(500);
   const [tone, setTone] = useState<string>("neutral");
@@ -13,6 +13,7 @@ const Parameters: React.FC = () => {
     "casual",
   ]);
   const [newTone, setNewTone] = useState<string>("");
+  const { updateGeneratedArticle } = useArticle();
 
   useEffect(() => {
     // Charger les valeurs des cookies lors du montage du composant
@@ -102,8 +103,7 @@ const Parameters: React.FC = () => {
           // Récupérer le contenu de l'article généré
           const generatedArticle = data.message.content;
 
-          // Faire quelque chose avec l'article généré, par exemple, l'afficher dans la console
-          console.log("Article généré:", generatedArticle);
+          updateGeneratedArticle(generatedArticle);
 
           // Ajouter d'autres logiques de traitement si nécessaire
         } else {

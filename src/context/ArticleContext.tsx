@@ -1,10 +1,9 @@
-// ArticleContext.tsx
-
 import React, { createContext, useContext, ReactNode, useState } from "react";
 
 // Définir le type pour la valeur du contexte
 interface ArticleContextType {
   generatedArticle: string;
+  updateGeneratedArticle: (newArticle: string) => void;
 }
 
 // Création du contexte avec une valeur initiale de type ArticleContextType
@@ -30,8 +29,12 @@ export const ArticleProvider: React.FC<ArticleProviderProps> = ({
 }) => {
   const [generatedArticle, setGeneratedArticle] = useState<string>("");
 
+  const updateGeneratedArticle = (newArticle: string) => {
+    setGeneratedArticle(newArticle);
+  };
   const value: ArticleContextType = {
     generatedArticle,
+    updateGeneratedArticle,
   };
 
   return (
