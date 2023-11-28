@@ -2,9 +2,10 @@
 
 import React, { useState } from "react";
 import Sidebar from "./SideBar";
+import Generate from "./Generate";
 
 const Main: React.FC = () => {
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [generatedArticle, setGeneratedArticle] = useState("");
 
   const handleGenerateArticle = () => {
@@ -16,17 +17,20 @@ const Main: React.FC = () => {
   const handleCloseSidebar = () => {
     setSidebarOpen(false);
   };
+  const handleOpenSidebar = () => {
+    setSidebarOpen(true);
+  };
 
   return (
-    <div>
-      {/* ... autres éléments de votre page ... */}
-
-      <button onClick={handleGenerateArticle}>Générer un article</button>
-
+    <div className="flex">
       {/* Sidebar */}
-      <Sidebar isOpen={isSidebarOpen} onClose={handleCloseSidebar} />
-
-      {/* ... autres éléments de votre page ... */}
+      <Sidebar
+        isOpen={isSidebarOpen}
+        onClose={handleCloseSidebar}
+        onOpen={handleOpenSidebar}
+      />
+      {/* Contenu de l'article */}
+      <Generate generatedArticle={generatedArticle} />
     </div>
   );
 };

@@ -7,7 +7,6 @@ const Parameters: React.FC = () => {
   const [tone, setTone] = useState<string>("neutral");
   const [language, setLanguage] = useState<string>("english");
   const [topic, setTopic] = useState<string>("technology");
-  const [customFilter, setCustomFilter] = useState<string>("");
   const [allTones, setAllTones] = useState<string[]>([
     "neutral",
     "formal",
@@ -124,7 +123,7 @@ const Parameters: React.FC = () => {
 
   return (
     <div className="container mx-auto mt-8">
-      <h2 className="mb-4 text-3xl font-bold">Adjust Parameters</h2>
+      <h2 className="mb-4 text-xl font-bold">Adjust Parameters</h2>
 
       {/* Topic Filter */}
       <div className="mb-4">
@@ -163,7 +162,7 @@ const Parameters: React.FC = () => {
         <label className="mb-2 block text-sm font-medium text-gray-700">
           Writing Tone
         </label>
-        <div className="flex items-center">
+        <div className="flex flex-wrap items-center gap-2">
           {allTones.map((toneOption, index) => (
             <button
               key={index}

@@ -1,10 +1,16 @@
+// Generate.tsx
+
 import React from "react";
 
-const Generate: React.FC = () => {
+interface GenerateProps {
+  generatedArticle: string;
+}
+
+const Generate: React.FC<GenerateProps> = ({ generatedArticle }) => {
   return (
-    <div>
-      <h2>Générer un Article basé sur les Entrées de l'Utilisateur</h2>
-      {/* Contenu du composant */}
+    <div className="w-full rounded p-4 shadow">
+      <h2 className="mb-4 text-xl font-bold">Article généré</h2>
+      <p>{generatedArticle}</p>
     </div>
   );
 };
