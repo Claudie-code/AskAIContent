@@ -2,7 +2,12 @@
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useArticle } from "../context/ArticleContext";
-const Parameters: React.FC = () => {
+
+interface ParametersProps {
+  loading: boolean;
+  setLoading: (arg0: boolean) => void;
+}
+const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
   const [articleLength, setArticleLength] = useState<number>(500);
   const [tone, setTone] = useState<string>("neutral");
   const [language, setLanguage] = useState<string>("english");
@@ -74,6 +79,8 @@ const Parameters: React.FC = () => {
   };
 
   const handleSubmit = () => {
+    setLoading(true);
+
     // Construire l'objet avec les paramètres à envoyer
     const dataToSend = {
       articleLength,
@@ -83,7 +90,7 @@ const Parameters: React.FC = () => {
     };
 
     // Utiliser fetch pour envoyer une requête POST vers votre backend local
-    fetch("http://localhost:3000/generate-article", {
+    fetch("http://localhost:3001/generate-article", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -98,6 +105,7 @@ const Parameters: React.FC = () => {
         return response.json();
       })
       .then((data) => {
+        data = data.article;
         // Vérifier si la réponse est positive
         if (data && data.finish_reason === "stop") {
           // Récupérer le contenu de l'article généré
@@ -118,6 +126,10 @@ const Parameters: React.FC = () => {
           error.message,
         );
         // Gérer les erreurs selon vos besoins
+      })
+      .finally(() => {
+        // Code qui sera exécuté indépendamment du succès ou de l'échec
+        setLoading(false);
       });
   };
 
@@ -210,9 +222,14 @@ const Parameters: React.FC = () => {
       {/* Validation Button */}
       <button
         onClick={handleSubmit}
-        className="mt-4 rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+        className={`mt-4 rounded-md px-4 py-2 text-white ${
+          loading
+            ? "cursor-not-allowed bg-gray-500"
+            : "bg-blue-500 hover:bg-blue-600"
+        }`}
+        disabled={loading}
       >
-        Generate Article
+        {loading ? "Generating..." : "Generate Article"}
       </button>
     </div>
   );

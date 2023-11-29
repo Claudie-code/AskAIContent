@@ -42,9 +42,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onOpen }) => {
               className={`transition-all duration-500 ease-in-out ${
                 isOpen ? "opacity-100" : "opacity-0"
               }`}
-            >
-              <Parameters />
-            </div>
+            ></div>
           </div>
         ) : (
           <div>
