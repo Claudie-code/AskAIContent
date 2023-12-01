@@ -22,7 +22,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onOpen }) => {
         {isOpen ? (
           <div>
             <Link to="/" className="text-xl font-bold text-blue-500">
-              ContentForge
+              ContentAI
             </Link>
             <div className="flex justify-end">
               <button
@@ -47,7 +47,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onOpen }) => {
         ) : (
           <div>
             <Link to="/" className="text-xl font-bold text-blue-500">
-              ContentForge
+              ContentAI
             </Link>
             <button
               onClick={onOpen}
