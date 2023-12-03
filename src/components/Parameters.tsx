@@ -1,4 +1,3 @@
-// src/components/Parameters.tsx
 import React, { useState, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
 import { useArticle } from "../context/ArticleContext";
@@ -60,13 +59,12 @@ const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
   const [theme, setTheme] = useState<string>("");
   const [target, setTarget] = useState<string>("");
   const [detailLevels, setDetailLevels] = useState<string>("");
+  const { updateGeneratedArticle } = useArticle();
+  const inputRef = useRef<HTMLDivElement>(null);
+  const [isToneListVisible, setToneListVisibility] = useState(false);
   const [allTones, setAllTones] =
     useState<{ title: string; custom: boolean }[]>(commonTones);
   const [newTone, setNewTone] = useState<string>("");
-  const [isToneListVisible, setToneListVisibility] = useState(false);
-  const { updateGeneratedArticle } = useArticle();
-  const inputRef = useRef<HTMLDivElement>(null);
-
   const getCookie = (key: string) => Cookies.get(key);
   const setCookie = (key: string, value: string | number) =>
     Cookies.set(key, value.toString());
@@ -84,7 +82,6 @@ const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
     title: string,
     index: number,
   ) => {
-    // Vérifier si e.target est de type HTMLElement
     if (
       e.target instanceof HTMLElement &&
       e.target.tagName.toLowerCase() !== "button"
@@ -93,31 +90,38 @@ const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
     }
   };
 
-  const handleToneChange = (selectedTone: string) => {
-    setTone(selectedTone);
-    setCookie(COOKIE_KEYS.TONE, selectedTone);
+  const handleToneChange = (selectedValue: string) => {
+    handleStateChange(setTone, COOKIE_KEYS.TONE, selectedValue);
     setToneListVisibility(false);
   };
   const toggleToneListVisibility = () => {
     setToneListVisibility(!isToneListVisible);
   };
 
-  const handleLanguageChange = (selectedLanguage: string) => {
-    setLanguage(selectedLanguage);
-    setCookie(COOKIE_KEYS.LANGUAGE, selectedLanguage);
+  const handleLanguageChange = (selectedValue: string) => {
+    handleStateChange(setLanguage, COOKIE_KEYS.LANGUAGE, selectedValue);
   };
 
-  const handleThemeChange = (selectedTheme: string) => {
-    setTheme(selectedTheme);
-    setCookie(COOKIE_KEYS.THEME, selectedTheme);
+  const handleThemeChange = (selectedValue: string) => {
+    handleStateChange(setTheme, COOKIE_KEYS.THEME, selectedValue);
   };
-  const handleTargetChange = (selectedTarget: string) => {
-    setTarget(selectedTarget);
-    setCookie(COOKIE_KEYS.TARGET, selectedTarget);
+  const handleTargetChange = (selectedValue: string) => {
+    handleStateChange(setTarget, COOKIE_KEYS.TARGET, selectedValue);
   };
-  const handleLevelsChange = (selectedLevels: string) => {
-    setTarget(selectedLevels);
-    setCookie(COOKIE_KEYS.LEVELS, selectedLevels);
+  const handleDetailLevelsChange = (selectedValue: string) => {
+    handleStateChange(setDetailLevels, COOKIE_KEYS.LEVELS, selectedValue);
+  };
+
+  const handleStateChange = (
+    setState: React.Dispatch<React.SetStateAction<any>>,
+    cookieKey: string,
+    selectedValue: string,
+  ) => {
+    // Update state
+    setState(selectedValue);
+
+    // Set Cookie
+    setCookie(cookieKey, selectedValue);
   };
 
   const handleNewToneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -129,8 +133,8 @@ const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
       newTone.trim() !== "" &&
       !allTones.some((tone) => tone.title === newTone.trim())
     ) {
-      const newToneObject = { title: newTone.trim(), custom: true }; // Adapter selon votre structure
-      setAllTones([...allTones, newToneObject]);
+      const newToneObject = { title: newTone.trim(), custom: true };
+      setAllTones((prevTones) => [...prevTones, newToneObject]);
       setCookie(
         COOKIE_KEYS.ALL_TONES,
         JSON.stringify([...allTones, newToneObject]),
@@ -142,11 +146,9 @@ const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
 
   const handleRemoveTone = (e: React.MouseEvent, index: number) => {
     e.stopPropagation();
-    const updatedTones = [...allTones];
-    updatedTones.splice(index, 1);
+    const updatedTones = allTones.filter((_, i) => i !== index);
 
     const newToneValue = updatedTones.length > 0 ? updatedTones[0].title : "";
-    console.log("newToneValue", newToneValue);
     setAllTones(updatedTones);
     setTone(newToneValue);
     setCookie(COOKIE_KEYS.TONE, newToneValue);
@@ -233,6 +235,7 @@ const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
     setArticleLength(Number(getCookie(COOKIE_KEYS.ARTICLE_LENGTH)) || 500);
     setLanguage(getCookie(COOKIE_KEYS.LANGUAGE) || "English");
     setTheme(getCookie(COOKIE_KEYS.THEME) || "Technology");
+    setTarget(getCookie(COOKIE_KEYS.TARGET) || "");
   }, []);
 
   useEffect(() => {
@@ -243,14 +246,20 @@ const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
     };
   }, []);
   const sortedAllTones = allTones.slice().sort();
-  console.log("tone", tone);
+
   return (
     <div className="pb-4">
       <h2 className="mb-4 text-xl font-bold">Adjust Parameters</h2>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
         {/* Theme Filter */}
-        <Filter label="Theme" type="input" value={theme} onChange={setTheme} />
+        <Filter
+          label="Theme"
+          type="input"
+          value={theme}
+          onChange={handleThemeChange}
+          cookieKeySelectedOption={COOKIE_KEYS.THEME}
+        />
 
         {/* Article Length */}
         <div className="h-32 rounded-lg bg-gray-100 p-2">
@@ -268,6 +277,15 @@ const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
           <span className="text-sm text-gray-500">{articleLength} words</span>
         </div>
 
+        <Filter
+          label="Writing Tone"
+          type="select"
+          options={commonTones}
+          value={tone}
+          onChange={handleToneChange}
+          cookieKeyAllOptions={COOKIE_KEYS.ALL_TONES}
+          cookieKeySelectedOption={COOKIE_KEYS.TONE}
+        />
         {/* Writing Tone */}
         <div className="h-32 rounded-lg bg-gray-100 p-2">
           <label className="mb-2 block text-sm font-medium text-gray-700">
@@ -354,7 +372,9 @@ const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
           type="select"
           options={commonLanguages}
           value={language}
-          onChange={setLanguage}
+          onChange={handleLanguageChange}
+          cookieKeyAllOptions={COOKIE_KEYS.ALL_TONES}
+          cookieKeySelectedOption={COOKIE_KEYS.TONE}
         />
 
         {/* Detail Filter */}
@@ -363,7 +383,8 @@ const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
           type="select"
           options={commonDetailLevels}
           value={detailLevels}
-          onChange={setDetailLevels}
+          onChange={handleDetailLevelsChange}
+          cookieKeySelectedOption={COOKIE_KEYS.LEVELS}
         />
 
         {/* Target Filter */}
@@ -371,7 +392,8 @@ const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
           label="Target audience"
           type="input"
           value={target}
-          onChange={setTarget}
+          onChange={handleTargetChange}
+          cookieKeySelectedOption={COOKIE_KEYS.TARGET}
         />
       </div>
 
