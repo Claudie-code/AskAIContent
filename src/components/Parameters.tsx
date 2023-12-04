@@ -6,15 +6,15 @@ import Loader from "./Loader";
 import Alert from "./Alert";
 
 interface ParametersProps {
-  loading: boolean;
-  setLoading: (arg0: boolean) => void;
+  isParametersOpen: boolean;
+  handleCloseParameters: () => void;
 }
 
 const COOKIE_KEYS = {
   ARTICLE_LENGTH: "articleLength",
   TONE: "tone",
   LANGUAGE: "language",
-  THEME: "theme",
+  TOPIC: "topic",
   TARGET: "target",
   LEVELS: "levels",
   ALL_TONES: "allTones",
@@ -60,13 +60,14 @@ const commonExamples = ["Yes", "No"];
 
 const commonExternalURL = ["Yes", "No"];
 
-const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
+const Parameters: React.FC<ParametersProps> = ({ isParametersOpen }) => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [isAlertVisible, setAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [articleLength, setArticleLength] = useState<string>("500");
   const [tone, setTone] = useState<string>("");
   const [language, setLanguage] = useState<string>("");
-  const [theme, setTheme] = useState<string>("");
+  const [topic, setTopic] = useState<string>("");
   const [target, setTarget] = useState<string>("");
   const [example, setExample] = useState<string>("Yes");
   const [externalURL, setExternalURL] = useState<string>("Yes");
@@ -89,8 +90,8 @@ const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
   const handleLanguageChange = (selectedValue: string) => {
     handleStateChange(setLanguage, COOKIE_KEYS.LANGUAGE, selectedValue);
   };
-  const handleThemeChange = (selectedValue: string) => {
-    handleStateChange(setTheme, COOKIE_KEYS.THEME, selectedValue);
+  const handleTopicChange = (selectedValue: string) => {
+    handleStateChange(setTopic, COOKIE_KEYS.TOPIC, selectedValue);
   };
   const handleTargetChange = (selectedValue: string) => {
     handleStateChange(setTarget, COOKIE_KEYS.TARGET, selectedValue);
@@ -136,7 +137,7 @@ const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
     setLoading(true);
 
     const dataToSend = {
-      theme,
+      topic,
       articleLength,
       tone,
       detailLevels,
@@ -185,104 +186,100 @@ const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
   };
 
   return (
-    <div className="pb-4">
-      <h2 className="mb-4 text-xl font-bold">Adjust Parameters</h2>
+    <section className="mx-auto mt-20 max-w-4xl rounded-md bg-white p-6 shadow-md dark:bg-gray-800">
+      <h2 className="mb-4 text-xl font-bold">Parameters</h2>
+      <form>
+        <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
+          {/* Topic Filter */}
+          <Filter
+            label="Topic"
+            type="input"
+            value={topic}
+            onChange={handleTopicChange}
+            cookieKeySelectedOption={COOKIE_KEYS.TOPIC}
+          />
+          {/* Target Filter */}
+          <Filter
+            label="Target audience"
+            type="input"
+            value={target}
+            onChange={handleTargetChange}
+            cookieKeySelectedOption={COOKIE_KEYS.TARGET}
+          />
+          {/* Article Length */}
+          <Filter
+            label="Article Length"
+            type="input"
+            value={articleLength}
+            onChange={handleArticleLengthChange}
+            cookieKeySelectedOption={COOKIE_KEYS.ARTICLE_LENGTH}
+          />
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
-        {/* Theme Filter */}
-        <Filter
-          label="Theme"
-          type="input"
-          value={theme}
-          onChange={handleThemeChange}
-          cookieKeySelectedOption={COOKIE_KEYS.THEME}
-        />
+          {/* Language Filter */}
+          <Filter
+            label="Language"
+            type="select"
+            options={commonLanguages}
+            value={language}
+            onChange={handleLanguageChange}
+            cookieKeySelectedOption={COOKIE_KEYS.LANGUAGE}
+          />
+          {/* Writing Tone */}
+          <Filter
+            label="Writing Tone"
+            type="customSelect"
+            options={commonTones}
+            value={tone}
+            onChange={handleToneChange}
+            cookieKeyAllOptions={COOKIE_KEYS.ALL_TONES}
+            cookieKeySelectedOption={COOKIE_KEYS.TONE}
+          />
 
-        {/* Article Length */}
-        <Filter
-          label="Article Length"
-          type="input"
-          value={articleLength}
-          onChange={handleArticleLengthChange}
-          cookieKeySelectedOption={COOKIE_KEYS.ARTICLE_LENGTH}
-        />
+          {/* Detail Filter */}
+          <Filter
+            label="Detail Level"
+            type="select"
+            options={commonDetailLevels}
+            value={detailLevels}
+            onChange={handleDetailLevelsChange}
+            cookieKeySelectedOption={COOKIE_KEYS.LEVELS}
+          />
+          {/* Example Filter */}
+          <Filter
+            label="Example"
+            type="select"
+            options={commonExamples}
+            value={example}
+            onChange={handleExampleChange}
+            cookieKeySelectedOption={COOKIE_KEYS.EXAMPLE}
+          />
+          {/* External Source URL Filter */}
+          <Filter
+            label="External Source URL"
+            type="select"
+            options={commonExternalURL}
+            value={externalURL}
+            onChange={handleExternalURL}
+            cookieKeySelectedOption={COOKIE_KEYS.EXTERNAL_URL}
+          />
+        </div>
 
-        {/* Writing Tone */}
-        <Filter
-          label="Writing Tone"
-          type="customSelect"
-          options={commonTones}
-          value={tone}
-          onChange={handleToneChange}
-          cookieKeyAllOptions={COOKIE_KEYS.ALL_TONES}
-          cookieKeySelectedOption={COOKIE_KEYS.TONE}
-        />
-
-        {/* Language Filter */}
-        <Filter
-          label="Language"
-          type="select"
-          options={commonLanguages}
-          value={language}
-          onChange={handleLanguageChange}
-          cookieKeySelectedOption={COOKIE_KEYS.LANGUAGE}
-        />
-
-        {/* Detail Filter */}
-        <Filter
-          label="Detail Level"
-          type="select"
-          options={commonDetailLevels}
-          value={detailLevels}
-          onChange={handleDetailLevelsChange}
-          cookieKeySelectedOption={COOKIE_KEYS.LEVELS}
-        />
-
-        {/* Target Filter */}
-        <Filter
-          label="Target audience"
-          type="input"
-          value={target}
-          onChange={handleTargetChange}
-          cookieKeySelectedOption={COOKIE_KEYS.TARGET}
-        />
-
-        {/* Example Filter */}
-        <Filter
-          label="Example"
-          type="select"
-          options={commonExamples}
-          value={example}
-          onChange={handleExampleChange}
-          cookieKeySelectedOption={COOKIE_KEYS.EXAMPLE}
-        />
-
-        {/* External Source URL Filter */}
-        <Filter
-          label="External Source URL"
-          type="select"
-          options={commonExternalURL}
-          value={externalURL}
-          onChange={handleExternalURL}
-          cookieKeySelectedOption={COOKIE_KEYS.EXTERNAL_URL}
-        />
-      </div>
-
-      {/* Validation Button */}
-      <button
-        onClick={handleSubmit}
-        className={`mt-4 rounded-md px-4 py-2 text-white ${
-          loading
-            ? "cursor-not-allowed bg-gray-500"
-            : "bg-blue-500 hover:bg-blue-600"
-        }`}
-        disabled={loading}
-      >
-        {loading ? "Generating..." : "Generate Article"}
-      </button>
-      {loading && <Loader />}
-      {isAlertVisible && <Alert text={alertMessage} />}
-    </div>
+        {/* Validation Button */}
+        <button
+          onClick={handleSubmit}
+          className={`mt-4 rounded-md px-4 py-2 text-white ${
+            loading
+              ? "cursor-not-allowed bg-gray-500"
+              : "bg-blue-500 hover:bg-blue-600"
+          }`}
+          disabled={loading}
+        >
+          {loading ? "Generating..." : "Generate Article"}
+        </button>
+        {loading && <Loader />}
+        {isAlertVisible && <Alert text={alertMessage} />}
+      </form>
+    </section>
   );
 };
 

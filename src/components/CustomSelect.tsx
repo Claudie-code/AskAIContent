@@ -94,8 +94,11 @@ function CustomSelect({
   }, []);
 
   return (
-    <div className="h-32 rounded-lg bg-gray-100 p-2">
-      <label className="mb-2 block text-sm font-medium text-gray-700">
+    <div>
+      <label
+        htmlFor={label.toLowerCase()}
+        className="mb-2 block text-sm font-medium text-gray-700"
+      >
         {label}
       </label>
       <div className="relative flex flex-wrap items-center gap-2">
@@ -120,6 +123,8 @@ function CustomSelect({
               <div className="flex p-2">
                 <input
                   type="text"
+                  id={label.toLowerCase()}
+                  name={label.toLowerCase()}
                   value={newOption}
                   onChange={handleNewOptionChange}
                   className="mr-2 flex-1 rounded-md border border-gray-300"

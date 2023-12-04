@@ -4,29 +4,26 @@ import Generate from "./Generate";
 import Parameters from "./Parameters";
 
 const Main: React.FC = () => {
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const handleCloseSidebar = () => {
-    setSidebarOpen(false);
-  };
-  const handleOpenSidebar = () => {
-    setSidebarOpen(true);
+  const [isParametersOpen, setParametersOpen] = useState(false);
+  const handleOpenParameters = () => {
+    setParametersOpen(true);
   };
 
+  const handleCloseParameters = () => {
+    setParametersOpen(true);
+  };
   return (
     <div className="flex">
       {/* Sidebar */}
-      <Sidebar
-        isOpen={isSidebarOpen}
-        onClose={handleCloseSidebar}
-        onOpen={handleOpenSidebar}
-      />
+      <Sidebar handleOpenParameters={handleOpenParameters} />
       <div className="w-full rounded p-4 shadow">
-        <Parameters loading={loading} setLoading={setLoading} />
+        <Parameters
+          isParametersOpen={isParametersOpen}
+          handleCloseParameters={handleCloseParameters}
+        />
 
         {/* Contenu de l'article */}
-        {!loading && <Generate />}
+        <Generate />
       </div>
     </div>
   );

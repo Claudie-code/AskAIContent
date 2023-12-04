@@ -9,8 +9,11 @@ interface InputProps {
 
 const Input: React.FC<InputProps> = ({ label, value, onChange }) => {
   return (
-    <div className="h-32 rounded-lg bg-gray-100 p-2">
-      <label className="mb-2 block text-sm font-medium text-gray-700">
+    <div>
+      <label
+        htmlFor={label.toLowerCase()}
+        className="mb-2 block text-sm font-medium text-gray-700"
+      >
         {label}
       </label>
       {label === "Article Length" ? (

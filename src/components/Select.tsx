@@ -10,12 +10,17 @@ interface SelectProps {
 
 const Select: React.FC<SelectProps> = ({ label, options, value, onChange }) => {
   return (
-    <div className="h-32 rounded-lg bg-gray-100 p-2">
-      <label className="mb-2 block text-sm font-medium text-gray-700">
+    <div>
+      <label
+        htmlFor={label.toLowerCase()}
+        className="mb-2 block text-sm font-medium text-gray-700"
+      >
         {label}
       </label>
       <select
         value={value}
+        id={label.toLowerCase()}
+        name={label.toLowerCase()}
         onChange={(e) => onChange(e.target.value)}
         className="w-full rounded-md border p-2"
       >
