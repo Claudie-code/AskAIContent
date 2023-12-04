@@ -26,14 +26,12 @@ function CustomSelect({
   cookieKeyAllOptions,
   cookieKeySelectedOption,
 }: CustomSelectProps) {
-  const [allOptions, setAllOptions] =
-    useState<{ title: string; custom: boolean }[]>(options);
+  const [allOptions, setAllOptions] = useState<Option[]>(options);
   const [isListVisible, setListVisibility] = useState(false);
   const inputRef = useRef<HTMLDivElement>(null);
   const [newOption, setNewOption] = useState<string>("");
-
-  const toggleListVisibility = () => {
-    setListVisibility(!isListVisible);
+  const toggleListVisibility = (value: boolean) => {
+    setListVisibility(value);
   };
   const handleNewOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewOption(e.target.value);
@@ -66,6 +64,12 @@ function CustomSelect({
     setCookie(cookieKeyAllOptions, JSON.stringify(updatedTones));
   };
 
+  const handleClickOutside = (e: React.MouseEvent | MouseEvent) => {
+    if (inputRef.current && !inputRef.current.contains(e.target as Node)) {
+      toggleListVisibility(false);
+    }
+  };
+
   useEffect(() => {
     // save all tones
     const storedOptions = getCookie(cookieKeyAllOptions);
@@ -80,7 +84,16 @@ function CustomSelect({
         : options;
     setAllOptions(tonesToSet);
   }, []);
-  console.log("option", options);
+
+  useEffect(() => {
+    // Clic outside select
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
+  console.log("option CustomSelect", options);
   return (
     <div className="h-32 rounded-lg bg-gray-100 p-2">
       <label className="mb-2 block text-sm font-medium text-gray-700">
@@ -90,7 +103,7 @@ function CustomSelect({
         <div ref={inputRef} className="w-full">
           <button
             className="flex w-full cursor-pointer justify-between rounded-md border bg-white p-2"
-            onClick={toggleListVisibility}
+            onClick={() => toggleListVisibility(!isListVisible)}
           >
             <p>{value}</p>
             <svg
@@ -127,12 +140,12 @@ function CustomSelect({
                   </svg>
                 </button>
               </div>
-              {options.map((option, index) => (
+              {allOptions.map((option, index) => (
                 <li
                   key={index}
                   onClick={() => {
                     onChange(option.title);
-                    toggleListVisibility();
+                    toggleListVisibility(!isListVisible);
                   }}
                   className="flex items-center justify-between p-2 hover:bg-gray-100"
                 >

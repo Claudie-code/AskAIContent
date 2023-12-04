@@ -37,7 +37,6 @@ const Filter: React.FC<FilterProps> = ({
     const storeOption = getCookie(cookieKeySelectedOption) || "";
     onChange(storeOption);
   }, []);
-
   switch (type) {
     case "input":
       return <Input label={label} value={value} onChange={onChange} />;
