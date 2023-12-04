@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import { useArticle } from "../context/ArticleContext";
 import Filter from "./Filter";
 import Loader from "./Loader";
+import Alert from "./Alert";
 
 interface ParametersProps {
   loading: boolean;
@@ -60,6 +61,8 @@ const commonExamples = ["Yes", "No"];
 const commonExternalURL = ["Yes", "No"];
 
 const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
+  const [isAlertVisible, setAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
   const [articleLength, setArticleLength] = useState<string>("500");
   const [tone, setTone] = useState<string>("");
   const [language, setLanguage] = useState<string>("");
@@ -114,10 +117,24 @@ const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
     setCookie(cookieKey, selectedValue);
   };
 
+  const showAlert = (message: string) => {
+    setAlertMessage(message);
+    setAlertVisible(true);
+
+    // automatically hide the alert after 5 sc
+    setTimeout(() => {
+      hideAlert();
+    }, 5000);
+  };
+
+  const hideAlert = () => {
+    setAlertVisible(false);
+    setAlertMessage("");
+  };
+
   const handleSubmit = () => {
     setLoading(true);
 
-    // Construire l'objet avec les paramètres à envoyer
     const dataToSend = {
       theme,
       articleLength,
@@ -129,12 +146,10 @@ const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
       externalURL,
     };
 
-    // Utiliser fetch pour envoyer une requête POST vers votre backend local
     fetch("http://localhost:3001/generate-article", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // Ajouter d'autres en-têtes si nécessaire
       },
       body: JSON.stringify(dataToSend),
     })
@@ -146,26 +161,23 @@ const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
       })
       .then((data) => {
         data = data.article;
-        // Vérifier si la réponse est positive
+
+        // Check if the response is positive
         if (data && data.finish_reason === "stop") {
-          // Récupérer le contenu de l'article généré
           const generatedArticle = data.message.content;
 
           updateGeneratedArticle(generatedArticle);
-
-          // Ajouter d'autres logiques de traitement si nécessaire
         } else {
-          console.error(
-            "La réponse du serveur ne contient pas les données attendues.",
+          console.error("Server response does not contain the expected data.");
+          showAlert(
+            "Error: Server response does not contain the expected data.",
           );
         }
       })
       .catch((error) => {
-        console.error(
-          "Erreur lors de la communication avec le serveur:",
-          error.message,
-        );
-        // Gérer les erreurs selon vos besoins
+        console.error("Error communicating with the server:", error.message);
+
+        showAlert(`Error communicating with the server`);
       })
       .finally(() => {
         setLoading(false);
@@ -269,6 +281,7 @@ const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
         {loading ? "Generating..." : "Generate Article"}
       </button>
       {loading && <Loader />}
+      {isAlertVisible && <Alert text={alertMessage} />}
     </div>
   );
 };

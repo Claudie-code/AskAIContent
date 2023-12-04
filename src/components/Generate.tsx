@@ -19,7 +19,7 @@ const Generate: React.FC = () => {
   return (
     <div className="mx-auto my-8 max-w-3xl text-gray-800">
       {paragraphs.map((paragraph, index) => {
-        if (paragraph.startsWith("```typescript")) {
+        if (paragraph.startsWith("```")) {
           isCodeBlock = true;
           codeBlockContent = "";
           return <StyledCodeBlock key={index} code={codeBlockContent} />;
