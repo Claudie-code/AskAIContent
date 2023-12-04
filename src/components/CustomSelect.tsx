@@ -10,7 +10,7 @@ interface CustomSelectProps {
   options: Option[];
   value: string;
   onChange: (value: string) => void;
-  setCookie: (key: string, value: string | number) => void;
+  setCookie: (key: string, value: string) => void;
   getCookie: (key: string) => string | undefined;
   cookieKeyAllOptions: string;
   cookieKeySelectedOption: string;
@@ -93,7 +93,6 @@ function CustomSelect({
     };
   }, []);
 
-  console.log("option CustomSelect", options);
   return (
     <div className="h-32 rounded-lg bg-gray-100 p-2">
       <label className="mb-2 block text-sm font-medium text-gray-700">
@@ -124,6 +123,7 @@ function CustomSelect({
                   value={newOption}
                   onChange={handleNewOptionChange}
                   className="mr-2 flex-1 rounded-md border border-gray-300"
+                  required
                 />
                 <button
                   onClick={handleAddOption}

@@ -1,8 +1,6 @@
 import React from "react";
 
-interface LoaderProps {
-  // Vous pouvez ajouter des propriétés supplémentaires au besoin
-}
+interface LoaderProps {}
 
 const Loader: React.FC<LoaderProps> = () => {
   return (

@@ -11,9 +11,7 @@ const StyledCodeBlock: React.FC<StyledCodeBlockProps> = ({ code }) => (
 
 const Generate: React.FC = () => {
   const { generatedArticle } = useArticle();
-  console.log("generatedArticle", generatedArticle);
   const paragraphs = generatedArticle.split("\n");
-  console.log("paragraphs", paragraphs);
 
   let isCodeBlock = false;
   let codeBlockContent = "";

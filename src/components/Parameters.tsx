@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import Cookies from "js-cookie";
 import { useArticle } from "../context/ArticleContext";
 import Filter from "./Filter";
+import Loader from "./Loader";
 
 interface ParametersProps {
   loading: boolean;
@@ -16,6 +17,8 @@ const COOKIE_KEYS = {
   TARGET: "target",
   LEVELS: "levels",
   ALL_TONES: "allTones",
+  EXAMPLE: "example",
+  EXTERNAL_URL: "external",
 };
 
 const commonTones = [
@@ -52,33 +55,37 @@ const commonLanguages = [
 
 const commonDetailLevels = ["Overview", "Moderate", "Advanced"];
 
+const commonExamples = ["Yes", "No"];
+
+const commonExternalURL = ["Yes", "No"];
+
 const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
-  const [articleLength, setArticleLength] = useState<number>(500);
+  const [articleLength, setArticleLength] = useState<string>("500");
   const [tone, setTone] = useState<string>("");
   const [language, setLanguage] = useState<string>("");
   const [theme, setTheme] = useState<string>("");
   const [target, setTarget] = useState<string>("");
+  const [example, setExample] = useState<string>("Yes");
+  const [externalURL, setExternalURL] = useState<string>("Yes");
   const [detailLevels, setDetailLevels] = useState<string>("");
   const { updateGeneratedArticle } = useArticle();
   const setCookie = (key: string, value: string | number) =>
     Cookies.set(key, value.toString());
 
-  const handleArticleLengthChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const value = parseInt(e.target.value, 10);
-    setArticleLength(value);
-    setCookie(COOKIE_KEYS.ARTICLE_LENGTH, value);
+  const handleArticleLengthChange = (selectedValue: string) => {
+    handleStateChange(
+      setArticleLength,
+      COOKIE_KEYS.ARTICLE_LENGTH,
+      selectedValue,
+    );
   };
 
   const handleToneChange = (selectedValue: string) => {
     handleStateChange(setTone, COOKIE_KEYS.TONE, selectedValue);
   };
-
   const handleLanguageChange = (selectedValue: string) => {
     handleStateChange(setLanguage, COOKIE_KEYS.LANGUAGE, selectedValue);
   };
-
   const handleThemeChange = (selectedValue: string) => {
     handleStateChange(setTheme, COOKIE_KEYS.THEME, selectedValue);
   };
@@ -87,6 +94,12 @@ const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
   };
   const handleDetailLevelsChange = (selectedValue: string) => {
     handleStateChange(setDetailLevels, COOKIE_KEYS.LEVELS, selectedValue);
+  };
+  const handleExampleChange = (selectedValue: string) => {
+    handleStateChange(setExample, COOKIE_KEYS.EXAMPLE, selectedValue);
+  };
+  const handleExternalURL = (selectedValue: string) => {
+    handleStateChange(setExternalURL, COOKIE_KEYS.EXTERNAL_URL, selectedValue);
   };
 
   const handleStateChange = (
@@ -109,9 +122,11 @@ const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
       theme,
       articleLength,
       tone,
-      language,
       detailLevels,
       target,
+      language,
+      example,
+      externalURL,
     };
 
     // Utiliser fetch pour envoyer une requête POST vers votre backend local
@@ -153,7 +168,6 @@ const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
         // Gérer les erreurs selon vos besoins
       })
       .finally(() => {
-        // Code qui sera exécuté indépendamment du succès ou de l'échec
         setLoading(false);
       });
   };
@@ -173,20 +187,13 @@ const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
         />
 
         {/* Article Length */}
-        <div className="h-32 rounded-lg bg-gray-100 p-2">
-          <label className="mb-2 block text-sm font-medium text-gray-700">
-            Article Length
-          </label>
-          <input
-            type="range"
-            min="100"
-            max="1000"
-            value={articleLength}
-            onChange={handleArticleLengthChange}
-            className="w-full"
-          />
-          <span className="text-sm text-gray-500">{articleLength} words</span>
-        </div>
+        <Filter
+          label="Article Length"
+          type="input"
+          value={articleLength}
+          onChange={handleArticleLengthChange}
+          cookieKeySelectedOption={COOKIE_KEYS.ARTICLE_LENGTH}
+        />
 
         {/* Writing Tone */}
         <Filter
@@ -227,6 +234,26 @@ const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
           onChange={handleTargetChange}
           cookieKeySelectedOption={COOKIE_KEYS.TARGET}
         />
+
+        {/* Example Filter */}
+        <Filter
+          label="Example"
+          type="select"
+          options={commonExamples}
+          value={example}
+          onChange={handleExampleChange}
+          cookieKeySelectedOption={COOKIE_KEYS.EXAMPLE}
+        />
+
+        {/* External Source URL Filter */}
+        <Filter
+          label="External Source URL"
+          type="select"
+          options={commonExternalURL}
+          value={externalURL}
+          onChange={handleExternalURL}
+          cookieKeySelectedOption={COOKIE_KEYS.EXTERNAL_URL}
+        />
       </div>
 
       {/* Validation Button */}
@@ -241,6 +268,7 @@ const Parameters: React.FC<ParametersProps> = ({ loading, setLoading }) => {
       >
         {loading ? "Generating..." : "Generate Article"}
       </button>
+      {loading && <Loader />}
     </div>
   );
 };

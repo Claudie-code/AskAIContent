@@ -14,7 +14,7 @@ interface FilterProps {
   label: string;
   type: "input" | "select" | "customSelect";
   options?: string[] | Option[];
-  value: string | number;
+  value: string;
   onChange: (value: string) => void;
   cookieKeyAllOptions?: string;
   cookieKeySelectedOption: string;
@@ -30,13 +30,14 @@ const Filter: React.FC<FilterProps> = ({
   cookieKeySelectedOption,
 }) => {
   const getCookie = (key: string) => Cookies.get(key);
-  const setCookie = (key: string, value: string | number) =>
+  const setCookie = (key: string, value: string) =>
     Cookies.set(key, value.toString());
 
   useEffect(() => {
-    const storeOption = getCookie(cookieKeySelectedOption) || "";
+    const storeOption = getCookie(cookieKeySelectedOption) || value;
     onChange(storeOption);
   }, []);
+
   switch (type) {
     case "input":
       return <Input label={label} value={value} onChange={onChange} />;
