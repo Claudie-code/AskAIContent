@@ -17,7 +17,7 @@ const Generate: React.FC = () => {
   let codeBlockContent = "";
 
   return (
-    <div className="mx-auto my-8 max-w-3xl text-gray-800">
+    <div className="mx-auto my-8 max-w-4xl text-gray-800">
       {paragraphs.map((paragraph, index) => {
         if (paragraph.startsWith("```")) {
           isCodeBlock = true;

@@ -68,7 +68,6 @@ function CustomSelect({
 
   const handleClickOutside = (event: React.MouseEvent | MouseEvent) => {
     if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
-      console.log("ici");
       toggleListVisibility(false);
     }
   };

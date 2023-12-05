@@ -4,10 +4,12 @@ import { useArticle } from "../context/ArticleContext";
 import Filter from "./Filter";
 import Loader from "./Loader";
 import Alert from "./Alert";
+import CloseButton from "./CloseButton";
 
 interface ParametersProps {
   isParametersOpen: boolean;
   handleCloseParameters: () => void;
+  handleOpenParameters: () => void;
 }
 
 const COOKIE_KEYS = {
@@ -63,6 +65,7 @@ const commonExternalURL = ["Yes", "No"];
 const Parameters: React.FC<ParametersProps> = ({
   isParametersOpen,
   handleCloseParameters,
+  handleOpenParameters,
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isAlertVisible, setAlertVisible] = useState(false);
@@ -190,10 +193,13 @@ const Parameters: React.FC<ParametersProps> = ({
   };
 
   return (
-    <>
-      {isParametersOpen && (
-        <section className="border-subtleBorder bg-subtleBg mx-auto mt-20 max-w-4xl rounded-md border p-6 shadow-md dark:bg-gray-800">
-          <h2 className="mb-4 text-xl font-bold">Parameters</h2>
+    <section className="border-subtleBorder bg-subtleBg mx-auto mt-10 max-w-4xl rounded-md border p-6 shadow-md transition-all dark:bg-gray-800">
+      {isParametersOpen ? (
+        <div>
+          <div className="flex items-center justify-between">
+            <h2 className="mb-4 text-xl font-bold">Create new Article</h2>
+            <CloseButton onClick={handleCloseParameters} />
+          </div>
           <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
             {/* Topic Filter */}
             <Filter
@@ -273,7 +279,7 @@ const Parameters: React.FC<ParametersProps> = ({
           <div className="flex">
             <button
               onClick={handleSubmit}
-              className={`m-auto mt-4 inline-block rounded-md border px-12 py-3 text-sm font-medium text-white transition-all focus:outline-none focus:ring ${
+              className={`m-auto mt-4 inline-block rounded-md border px-12 py-3 text-sm font-medium transition-all focus:outline-none focus:ring ${
                 loading
                   ? "cursor-not-allowed bg-gray-500"
                   : "bg-elementBg text-subtleText hover:bg-hoveredElementBg active:bg-activeElementBg border-border hover:border-hoveredBorder"
@@ -283,11 +289,26 @@ const Parameters: React.FC<ParametersProps> = ({
               {loading ? "Generating..." : "Generate Article"}
             </button>
           </div>
+
           {loading && <Loader />}
           {isAlertVisible && <Alert text={alertMessage} />}
-        </section>
+        </div>
+      ) : (
+        <div className="flex">
+          <button
+            onClick={handleOpenParameters}
+            className={`m-auto mt-4 inline-block rounded-md border px-12 py-3 text-sm font-medium transition-all focus:outline-none focus:ring ${
+              loading
+                ? "cursor-not-allowed bg-gray-500"
+                : "bg-elementBg text-subtleText hover:bg-hoveredElementBg active:bg-activeElementBg border-border hover:border-hoveredBorder"
+            }`}
+            disabled={loading}
+          >
+            New Article
+          </button>
+        </div>
       )}
-    </>
+    </section>
   );
 };
 
