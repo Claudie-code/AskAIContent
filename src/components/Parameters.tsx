@@ -265,17 +265,19 @@ const Parameters: React.FC<ParametersProps> = ({ isParametersOpen }) => {
         </div>
 
         {/* Validation Button */}
-        <button
-          onClick={handleSubmit}
-          className={`mt-4 rounded-md px-4 py-2 text-white ${
-            loading
-              ? "cursor-not-allowed bg-gray-500"
-              : "bg-blue-500 hover:bg-blue-600"
-          }`}
-          disabled={loading}
-        >
-          {loading ? "Generating..." : "Generate Article"}
-        </button>
+        <div className="flex">
+          <button
+            onClick={handleSubmit}
+            className={`m-auto mt-4 inline-block  rounded-md border px-12 py-3 text-sm font-medium text-white focus:outline-none focus:ring   ${
+              loading
+                ? "cursor-not-allowed bg-gray-500"
+                : "border-borderPrimary bg-solidPrimary hover:text-textPrimary hover:bg-transparent"
+            }`}
+            disabled={loading}
+          >
+            {loading ? "Generating..." : "Generate Article"}
+          </button>
+        </div>
         {loading && <Loader />}
         {isAlertVisible && <Alert text={alertMessage} />}
       </form>

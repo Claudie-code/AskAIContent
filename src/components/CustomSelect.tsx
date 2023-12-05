@@ -97,7 +97,7 @@ function CustomSelect({
     <div>
       <label
         htmlFor={label.toLowerCase()}
-        className="mb-2 block text-sm font-medium text-gray-700"
+        className="mb-2 block text-sm font-medium text-gray-500"
       >
         {label}
       </label>

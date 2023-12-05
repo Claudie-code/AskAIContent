@@ -25,18 +25,14 @@ const Sidebar: React.FC<SidebarProps> = ({ handleOpenParameters }) => {
   return (
     <div className={sidebarClasses}>
       <div className="flex flex-col gap-2">
-        <Link to="/" className="text-xl font-bold text-blue-500">
-          {isSidebarOpen ? (
-            "AskAiContent"
-          ) : (
-            <img className="rounded-full" src={logo} alt="Logo" />
-          )}
+        <Link to="/" className="text-solidPrimary text-xl font-bold">
+          <img className="m-auto w-20 rounded-full" src={logo} alt="Logo" />
         </Link>
         <div className="flex justify-end">
           {isSidebarOpen ? (
             <button
               onClick={handleCloseSidebar}
-              className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+              className="hover:bg-interactivePrimary group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:text-gray-700"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -49,7 +45,7 @@ const Sidebar: React.FC<SidebarProps> = ({ handleOpenParameters }) => {
           ) : (
             <button
               onClick={handleOpenSidebar}
-              className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+              className="hover:bg-interactivePrimary group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:text-gray-700"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -64,8 +60,11 @@ const Sidebar: React.FC<SidebarProps> = ({ handleOpenParameters }) => {
 
         <button
           onClick={handleOpenParameters}
-          className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+          className={` hover:bg-interactivePrimary group relative flex items-center rounded px-2 py-1.5 text-gray-500 transition-all hover:text-gray-700 ${
+            isSidebarOpen ? "justify-between" : "justify-center"
+          }`}
         >
+          {isSidebarOpen ? "New Article" : ""}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="16"
