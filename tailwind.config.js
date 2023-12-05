@@ -5,24 +5,26 @@ module.exports = {
     extend: {
       colors: {
         // Backgrounds
-        bgPrimary: "#F4FAFF",
-        bgSecondary: "#2196F3",
+        appBg: "#FAFDFE",
+        subtleBg: "#F2FAFB",
 
         // Interactive components
-        interactivePrimary: "#D5EFFF",
-        interactiveSecondary: "#FFC300",
+        elementBg: "#DEF7F9",
+        hoveredElementBg: "#CAF1F6",
+        activeElementBg: "#B5E9F0",
 
         // Borders and separators
-        borderPrimary: "#5EB1EF",
-        borderSecondary: "#888888",
+        subtleBorder: "#9DDDE7",
+        border: "#9DDDE7",
+        hoveredBorder: "#3DB9CF",
 
         // Solid colors
-        solidPrimary: "#0090FF",
-        solidSecondary: "#800080",
+        solidBg: "#00A2C7",
+        hoveredSolidBg: "#0797B9",
 
         // Accessible text
-        textPrimary: "#113264",
-        textSecondary: "#FFFFFF",
+        subtleText: "#107D98",
+        text: "#0D3C48",
       },
     },
   },

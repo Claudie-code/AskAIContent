@@ -60,7 +60,10 @@ const commonExamples = ["Yes", "No"];
 
 const commonExternalURL = ["Yes", "No"];
 
-const Parameters: React.FC<ParametersProps> = ({ isParametersOpen }) => {
+const Parameters: React.FC<ParametersProps> = ({
+  isParametersOpen,
+  handleCloseParameters,
+}) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isAlertVisible, setAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -168,6 +171,7 @@ const Parameters: React.FC<ParametersProps> = ({ isParametersOpen }) => {
           const generatedArticle = data.message.content;
 
           updateGeneratedArticle(generatedArticle);
+          handleCloseParameters();
         } else {
           console.error("Server response does not contain the expected data.");
           showAlert(
@@ -186,102 +190,104 @@ const Parameters: React.FC<ParametersProps> = ({ isParametersOpen }) => {
   };
 
   return (
-    <section className="mx-auto mt-20 max-w-4xl rounded-md bg-white p-6 shadow-md dark:bg-gray-800">
-      <h2 className="mb-4 text-xl font-bold">Parameters</h2>
-      <form>
-        <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
-          {/* Topic Filter */}
-          <Filter
-            label="Topic"
-            type="input"
-            value={topic}
-            onChange={handleTopicChange}
-            cookieKeySelectedOption={COOKIE_KEYS.TOPIC}
-          />
-          {/* Target Filter */}
-          <Filter
-            label="Target audience"
-            type="input"
-            value={target}
-            onChange={handleTargetChange}
-            cookieKeySelectedOption={COOKIE_KEYS.TARGET}
-          />
-          {/* Article Length */}
-          <Filter
-            label="Article Length"
-            type="input"
-            value={articleLength}
-            onChange={handleArticleLengthChange}
-            cookieKeySelectedOption={COOKIE_KEYS.ARTICLE_LENGTH}
-          />
+    <>
+      {isParametersOpen && (
+        <section className="border-subtleBorder bg-subtleBg mx-auto mt-20 max-w-4xl rounded-md border p-6 shadow-md dark:bg-gray-800">
+          <h2 className="mb-4 text-xl font-bold">Parameters</h2>
+          <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
+            {/* Topic Filter */}
+            <Filter
+              label="Topic"
+              type="input"
+              value={topic}
+              onChange={handleTopicChange}
+              cookieKeySelectedOption={COOKIE_KEYS.TOPIC}
+            />
+            {/* Target Filter */}
+            <Filter
+              label="Target audience"
+              type="input"
+              value={target}
+              onChange={handleTargetChange}
+              cookieKeySelectedOption={COOKIE_KEYS.TARGET}
+            />
+            {/* Article Length */}
+            <Filter
+              label="Article Length"
+              type="input"
+              value={articleLength}
+              onChange={handleArticleLengthChange}
+              cookieKeySelectedOption={COOKIE_KEYS.ARTICLE_LENGTH}
+            />
 
-          {/* Language Filter */}
-          <Filter
-            label="Language"
-            type="select"
-            options={commonLanguages}
-            value={language}
-            onChange={handleLanguageChange}
-            cookieKeySelectedOption={COOKIE_KEYS.LANGUAGE}
-          />
-          {/* Writing Tone */}
-          <Filter
-            label="Writing Tone"
-            type="customSelect"
-            options={commonTones}
-            value={tone}
-            onChange={handleToneChange}
-            cookieKeyAllOptions={COOKIE_KEYS.ALL_TONES}
-            cookieKeySelectedOption={COOKIE_KEYS.TONE}
-          />
+            {/* Language Filter */}
+            <Filter
+              label="Language"
+              type="select"
+              options={commonLanguages}
+              value={language}
+              onChange={handleLanguageChange}
+              cookieKeySelectedOption={COOKIE_KEYS.LANGUAGE}
+            />
+            {/* Writing Tone */}
+            <Filter
+              label="Writing Tone"
+              type="customSelect"
+              options={commonTones}
+              value={tone}
+              onChange={handleToneChange}
+              cookieKeyAllOptions={COOKIE_KEYS.ALL_TONES}
+              cookieKeySelectedOption={COOKIE_KEYS.TONE}
+            />
 
-          {/* Detail Filter */}
-          <Filter
-            label="Detail Level"
-            type="select"
-            options={commonDetailLevels}
-            value={detailLevels}
-            onChange={handleDetailLevelsChange}
-            cookieKeySelectedOption={COOKIE_KEYS.LEVELS}
-          />
-          {/* Example Filter */}
-          <Filter
-            label="Example"
-            type="select"
-            options={commonExamples}
-            value={example}
-            onChange={handleExampleChange}
-            cookieKeySelectedOption={COOKIE_KEYS.EXAMPLE}
-          />
-          {/* External Source URL Filter */}
-          <Filter
-            label="External Source URL"
-            type="select"
-            options={commonExternalURL}
-            value={externalURL}
-            onChange={handleExternalURL}
-            cookieKeySelectedOption={COOKIE_KEYS.EXTERNAL_URL}
-          />
-        </div>
+            {/* Detail Filter */}
+            <Filter
+              label="Detail Level"
+              type="select"
+              options={commonDetailLevels}
+              value={detailLevels}
+              onChange={handleDetailLevelsChange}
+              cookieKeySelectedOption={COOKIE_KEYS.LEVELS}
+            />
+            {/* Example Filter */}
+            <Filter
+              label="Example"
+              type="select"
+              options={commonExamples}
+              value={example}
+              onChange={handleExampleChange}
+              cookieKeySelectedOption={COOKIE_KEYS.EXAMPLE}
+            />
+            {/* External Source URL Filter */}
+            <Filter
+              label="External Source URL"
+              type="select"
+              options={commonExternalURL}
+              value={externalURL}
+              onChange={handleExternalURL}
+              cookieKeySelectedOption={COOKIE_KEYS.EXTERNAL_URL}
+            />
+          </div>
 
-        {/* Validation Button */}
-        <div className="flex">
-          <button
-            onClick={handleSubmit}
-            className={`m-auto mt-4 inline-block  rounded-md border px-12 py-3 text-sm font-medium text-white focus:outline-none focus:ring   ${
-              loading
-                ? "cursor-not-allowed bg-gray-500"
-                : "border-borderPrimary bg-solidPrimary hover:text-textPrimary hover:bg-transparent"
-            }`}
-            disabled={loading}
-          >
-            {loading ? "Generating..." : "Generate Article"}
-          </button>
-        </div>
-        {loading && <Loader />}
-        {isAlertVisible && <Alert text={alertMessage} />}
-      </form>
-    </section>
+          {/* Validation Button */}
+          <div className="flex">
+            <button
+              onClick={handleSubmit}
+              className={`m-auto mt-4 inline-block rounded-md border px-12 py-3 text-sm font-medium text-white transition-all focus:outline-none focus:ring ${
+                loading
+                  ? "cursor-not-allowed bg-gray-500"
+                  : "bg-elementBg text-subtleText hover:bg-hoveredElementBg active:bg-activeElementBg border-border hover:border-hoveredBorder"
+              }`}
+              disabled={loading}
+            >
+              {loading ? "Generating..." : "Generate Article"}
+            </button>
+          </div>
+          {loading && <Loader />}
+          {isAlertVisible && <Alert text={alertMessage} />}
+        </section>
+      )}
+    </>
   );
 };
 

@@ -13,10 +13,10 @@ const Main: React.FC = () => {
     setParametersOpen(true);
   };
   return (
-    <div className="text-textPrimary flex">
+    <div className="text-text flex">
       {/* Sidebar */}
       <Sidebar handleOpenParameters={handleOpenParameters} />
-      <div className="bg-bgPrimary w-full">
+      <div className="bg-appBg w-full">
         <Parameters
           isParametersOpen={isParametersOpen}
           handleCloseParameters={handleCloseParameters}

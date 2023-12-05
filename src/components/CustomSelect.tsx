@@ -33,8 +33,10 @@ function CustomSelect({
   const toggleListVisibility = (value: boolean) => {
     setListVisibility(value);
   };
-  const handleNewOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewOption(e.target.value);
+  const handleNewOptionChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setNewOption(event.target.value);
   };
 
   const handleAddOption = () => {
@@ -53,8 +55,8 @@ function CustomSelect({
     }
   };
 
-  const handleRemoveOption = (e: React.MouseEvent, index: number) => {
-    e.stopPropagation();
+  const handleRemoveOption = (event: React.MouseEvent, index: number) => {
+    event.stopPropagation();
     const updatedTones = allOptions.filter((_, i) => i !== index);
 
     const newToneValue = updatedTones.length > 0 ? updatedTones[0].title : "";
@@ -64,8 +66,9 @@ function CustomSelect({
     setCookie(cookieKeyAllOptions, JSON.stringify(updatedTones));
   };
 
-  const handleClickOutside = (e: React.MouseEvent | MouseEvent) => {
-    if (inputRef.current && !inputRef.current.contains(e.target as Node)) {
+  const handleClickOutside = (event: React.MouseEvent | MouseEvent) => {
+    if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
+      console.log("ici");
       toggleListVisibility(false);
     }
   };
@@ -97,7 +100,7 @@ function CustomSelect({
     <div>
       <label
         htmlFor={label.toLowerCase()}
-        className="mb-2 block text-sm font-medium text-gray-500"
+        className="text-subtleText mb-2 block text-sm font-medium"
       >
         {label}
       </label>
@@ -110,8 +113,7 @@ function CustomSelect({
             <p>{value}</p>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              height="16"
-              width="16"
+              height="0.7em"
               viewBox="0 0 512 512"
             >
               <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
@@ -128,11 +130,10 @@ function CustomSelect({
                   value={newOption}
                   onChange={handleNewOptionChange}
                   className="mr-2 flex-1 rounded-md border border-gray-300"
-                  required
                 />
                 <button
                   onClick={handleAddOption}
-                  className="rounded-md bg-blue-500 p-2 text-white hover:bg-blue-600"
+                  className="bg-elementBg text-subtleText hover:bg-hoveredElementBg active:bg-activeElementBg border-border hover:border-hoveredBorder rounded-md border p-2"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
