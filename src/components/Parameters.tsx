@@ -193,8 +193,13 @@ const Parameters: React.FC<ParametersProps> = ({
   };
 
   return (
-    <section className="border-subtleBorder bg-subtleBg mx-auto mt-10 max-w-4xl rounded-md border p-6 shadow-md transition-all dark:bg-gray-800">
-      {isParametersOpen ? (
+    <>
+      <section
+        className={`border-subtleBorder bg-subtleBg mx-auto mt-10 max-w-4xl overflow-hidden rounded-md shadow-md transition-all dark:bg-gray-800 ${
+          isParametersOpen ? "h-auto border p-6 " : "h-0"
+        } 
+    `}
+      >
         <div>
           <div className="flex items-center justify-between">
             <h2 className="mb-4 text-xl font-bold">Create new Article</h2>
@@ -293,11 +298,12 @@ const Parameters: React.FC<ParametersProps> = ({
           {loading && <Loader />}
           {isAlertVisible && <Alert text={alertMessage} />}
         </div>
-      ) : (
-        <div className="flex">
+      </section>
+      {!isParametersOpen && (
+        <div className="m-auto flex max-w-4xl justify-center ">
           <button
             onClick={handleOpenParameters}
-            className={`m-auto mt-4 inline-block rounded-md border px-12 py-3 text-sm font-medium transition-all focus:outline-none focus:ring ${
+            className={`mt-4 inline-block w-full rounded-md border px-12 py-3 text-sm font-medium transition-all focus:outline-none focus:ring ${
               loading
                 ? "cursor-not-allowed bg-gray-500"
                 : "bg-elementBg text-subtleText hover:bg-hoveredElementBg active:bg-activeElementBg border-border hover:border-hoveredBorder"
@@ -308,7 +314,7 @@ const Parameters: React.FC<ParametersProps> = ({
           </button>
         </div>
       )}
-    </section>
+    </>
   );
 };
 
