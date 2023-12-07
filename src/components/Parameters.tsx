@@ -71,7 +71,7 @@ const Parameters: React.FC<ParametersProps> = ({
   const [platform, setPlatform] = useState<string>("");
   const [topic, setTopic] = useState<string>("");
   const [target, setTarget] = useState<string>("");
-  const { updateGeneratedArticle } = useArticle();
+  const { updateGeneratedArticle, numberOfAttempts } = useArticle();
   const setCookie = (key: string, value: string | number) =>
     Cookies.set(key, value.toString());
 
@@ -128,50 +128,55 @@ const Parameters: React.FC<ParametersProps> = ({
       language,
       platform,
     };
-
-    fetch("http://localhost:3001/generate-article", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(dataToSend),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
+    if (numberOfAttempts < 10) {
+      fetch("http://localhost:3001/generate-article", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend),
       })
-      .then((data) => {
-        data = data.article;
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          data = data.article;
 
-        // Check if the response is positive
-        if (data && data.finish_reason === "stop") {
-          const generatedArticle = data.message.content;
+          // Check if the response is positive
+          if (data && data.finish_reason === "stop") {
+            const generatedArticle = data.message.content;
 
-          updateGeneratedArticle(generatedArticle);
-          handleCloseParameters();
-        } else {
-          console.error("Server response does not contain the expected data.");
-          showAlert(
-            "Error: Server response does not contain the expected data.",
-          );
-        }
-      })
-      .catch((error) => {
-        console.error("Error communicating with the server:", error.message);
+            updateGeneratedArticle(generatedArticle);
+            handleCloseParameters();
+          } else {
+            console.error(
+              "Server response does not contain the expected data.",
+            );
+            showAlert(
+              "Error: Server response does not contain the expected data.",
+            );
+          }
+        })
+        .catch((error) => {
+          console.error("Error communicating with the server:", error.message);
 
-        showAlert(`Error communicating with the server`);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+          showAlert(`Error communicating with the server`);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      showAlert(`Maximum number of attempts reached.`);
+    }
   };
 
   return (
-    <>
+    <div className="m-auto max-w-4xl">
       <section
-        className={`mx-auto mt-10 max-w-4xl rounded-md border-subtleBorder bg-subtleBg shadow-md transition-all dark:bg-gray-800 ${
+        className={`rounded-md border-subtleBorder bg-subtleBg shadow-md transition-all dark:bg-gray-800 ${
           isParametersOpen ? "h-auto border p-6 " : "h-0 overflow-hidden"
         } 
     `}
@@ -233,10 +238,10 @@ const Parameters: React.FC<ParametersProps> = ({
           </div>
 
           {/* Validation Button */}
-          <div className="flex">
+          <div className="m-auto flex flex-col justify-center">
             <button
               onClick={handleSubmit}
-              className={`m-auto mt-4 inline-block rounded-md border px-12 py-3 text-sm font-medium transition-all focus:outline-none focus:ring ${
+              className={`mt-4 inline-block rounded-md border px-12 py-3 text-sm font-medium transition-all focus:outline-none focus:ring ${
                 loading
                   ? "cursor-not-allowed bg-gray-500"
                   : "border-border bg-elementBg text-subtleText hover:border-hoveredBorder hover:bg-hoveredElementBg active:bg-activeElementBg"
@@ -245,6 +250,9 @@ const Parameters: React.FC<ParametersProps> = ({
             >
               {loading ? "Generating..." : "Generate Article"}
             </button>
+            <p className="text-gray-500">
+              Number of attempts: {numberOfAttempts}/10
+            </p>
           </div>
 
           {loading && <Loader />}
@@ -252,10 +260,10 @@ const Parameters: React.FC<ParametersProps> = ({
         </div>
       </section>
       {!isParametersOpen && (
-        <div className="m-auto flex max-w-4xl justify-center ">
+        <div className="flex justify-center ">
           <button
             onClick={handleOpenParameters}
-            className={`mt-4 inline-block w-full rounded-md border px-12 py-3 text-sm font-medium transition-all focus:outline-none focus:ring ${
+            className={`inline-block w-full rounded-md border px-12 py-3 text-sm font-medium transition-all focus:outline-none focus:ring ${
               loading
                 ? "cursor-not-allowed bg-gray-500"
                 : "border-border bg-elementBg text-subtleText hover:border-hoveredBorder hover:bg-hoveredElementBg active:bg-activeElementBg"
@@ -266,7 +274,7 @@ const Parameters: React.FC<ParametersProps> = ({
           </button>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

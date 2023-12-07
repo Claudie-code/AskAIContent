@@ -9,6 +9,7 @@ import React, {
 interface ArticleContextType {
   generatedArticles: string[][];
   updateGeneratedArticle: (newArticle: string) => void;
+  numberOfAttempts: number;
 }
 
 const ArticleContext = createContext<ArticleContextType | undefined>(undefined);
@@ -33,6 +34,14 @@ export const ArticleProvider: React.FC<ArticleProviderProps> = ({
     return localStorageValue ? JSON.parse(localStorageValue) : [];
   });
 
+  const [numberOfAttempts, setNumberOfAttempts] = useState<number>(() => {
+    const storedValue = localStorage.getItem("nOA");
+    return storedValue ? parseInt(storedValue) : 0;
+  });
+
+  useEffect(() => {
+    localStorage.setItem("nOA", numberOfAttempts.toString());
+  }, [numberOfAttempts]);
   useEffect(() => {
     // Mettre à jour le localStorage lorsque generatedArticles change
     localStorage.setItem(
@@ -45,11 +54,13 @@ export const ArticleProvider: React.FC<ArticleProviderProps> = ({
     const paragraphsNewArticle = newArticle.split("\n");
 
     setGeneratedArticles((prevArray) => [...prevArray, paragraphsNewArticle]);
+    setNumberOfAttempts(numberOfAttempts + 1);
   };
 
   const value: ArticleContextType = {
     generatedArticles,
     updateGeneratedArticle,
+    numberOfAttempts,
   };
 
   return (
