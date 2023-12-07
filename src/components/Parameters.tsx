@@ -13,24 +13,24 @@ interface ParametersProps {
 }
 
 const COOKIE_KEYS = {
-  ARTICLE_LENGTH: "articleLength",
   TONE: "tone",
   LANGUAGE: "language",
   TOPIC: "topic",
   TARGET: "target",
   LEVELS: "levels",
   ALL_TONES: "allTones",
-  EXAMPLE: "example",
-  EXTERNAL_URL: "external",
+  PLATFORM: "platform",
 };
 
 const commonTones = [
-  { title: "Professional", custom: false },
-  { title: "Conversational", custom: false },
+  { title: "Informative", custom: false },
+  { title: "Entertaining", custom: false },
   { title: "Educational", custom: false },
-  { title: "Persuasive", custom: false },
-  { title: "Neutral", custom: false },
-  { title: "Optimistic", custom: false },
+  { title: "Inspiring", custom: false },
+  { title: "Opinionated", custom: false },
+  { title: "Interactive", custom: false },
+  { title: "Visual", custom: false },
+  { title: "Storytelling", custom: false },
 ];
 
 const commonLanguages = [
@@ -56,11 +56,7 @@ const commonLanguages = [
   "Vietnamese",
 ];
 
-const commonDetailLevels = ["Overview", "Moderate", "Advanced"];
-
-const commonExamples = ["Yes", "No"];
-
-const commonExternalURL = ["Yes", "No"];
+const commonPlatforms = ["Blog", "Youtube", "Instagram"];
 
 const Parameters: React.FC<ParametersProps> = ({
   isParametersOpen,
@@ -70,25 +66,14 @@ const Parameters: React.FC<ParametersProps> = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [isAlertVisible, setAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
-  const [articleLength, setArticleLength] = useState<string>("500");
-  const [tone, setTone] = useState<string>("");
-  const [language, setLanguage] = useState<string>("");
+  const [tone, setTone] = useState<string>("Informative");
+  const [language, setLanguage] = useState<string>("English");
+  const [platform, setPlatform] = useState<string>("");
   const [topic, setTopic] = useState<string>("");
   const [target, setTarget] = useState<string>("");
-  const [example, setExample] = useState<string>("Yes");
-  const [externalURL, setExternalURL] = useState<string>("Yes");
-  const [detailLevels, setDetailLevels] = useState<string>("");
   const { updateGeneratedArticle } = useArticle();
   const setCookie = (key: string, value: string | number) =>
     Cookies.set(key, value.toString());
-
-  const handleArticleLengthChange = (selectedValue: string) => {
-    handleStateChange(
-      setArticleLength,
-      COOKIE_KEYS.ARTICLE_LENGTH,
-      selectedValue,
-    );
-  };
 
   const handleToneChange = (selectedValue: string) => {
     handleStateChange(setTone, COOKIE_KEYS.TONE, selectedValue);
@@ -102,14 +87,8 @@ const Parameters: React.FC<ParametersProps> = ({
   const handleTargetChange = (selectedValue: string) => {
     handleStateChange(setTarget, COOKIE_KEYS.TARGET, selectedValue);
   };
-  const handleDetailLevelsChange = (selectedValue: string) => {
-    handleStateChange(setDetailLevels, COOKIE_KEYS.LEVELS, selectedValue);
-  };
-  const handleExampleChange = (selectedValue: string) => {
-    handleStateChange(setExample, COOKIE_KEYS.EXAMPLE, selectedValue);
-  };
-  const handleExternalURL = (selectedValue: string) => {
-    handleStateChange(setExternalURL, COOKIE_KEYS.EXTERNAL_URL, selectedValue);
+  const handlePlatformChange = (selectedValue: string) => {
+    handleStateChange(setPlatform, COOKIE_KEYS.PLATFORM, selectedValue);
   };
 
   const handleStateChange = (
@@ -144,13 +123,10 @@ const Parameters: React.FC<ParametersProps> = ({
 
     const dataToSend = {
       topic,
-      articleLength,
       tone,
-      detailLevels,
       target,
       language,
-      example,
-      externalURL,
+      platform,
     };
 
     fetch("http://localhost:3001/generate-article", {
@@ -195,8 +171,8 @@ const Parameters: React.FC<ParametersProps> = ({
   return (
     <>
       <section
-        className={`mx-auto mt-10 max-w-4xl overflow-hidden rounded-md border-subtleBorder bg-subtleBg shadow-md transition-all dark:bg-gray-800 ${
-          isParametersOpen ? "h-auto border p-6 " : "h-0"
+        className={`mx-auto mt-10 max-w-4xl rounded-md border-subtleBorder bg-subtleBg shadow-md transition-all dark:bg-gray-800 ${
+          isParametersOpen ? "h-auto border p-6 " : "h-0 overflow-hidden"
         } 
     `}
       >
@@ -208,6 +184,15 @@ const Parameters: React.FC<ParametersProps> = ({
             <CloseButton onClick={handleCloseParameters} />
           </div>
           <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
+            {/* Platform Filter */}
+            <Filter
+              label="Platform"
+              type="select"
+              options={commonPlatforms}
+              value={platform}
+              onChange={handlePlatformChange}
+              cookieKeySelectedOption={COOKIE_KEYS.PLATFORM}
+            />
             {/* Topic Filter */}
             <Filter
               label="Topic"
@@ -224,13 +209,16 @@ const Parameters: React.FC<ParametersProps> = ({
               onChange={handleTargetChange}
               cookieKeySelectedOption={COOKIE_KEYS.TARGET}
             />
-            {/* Article Length */}
+
+            {/* Tone */}
             <Filter
-              label="Article Length"
-              type="input"
-              value={articleLength}
-              onChange={handleArticleLengthChange}
-              cookieKeySelectedOption={COOKIE_KEYS.ARTICLE_LENGTH}
+              label="Content Approach"
+              type="customSelect"
+              options={commonTones}
+              value={tone}
+              onChange={handleToneChange}
+              cookieKeyAllOptions={COOKIE_KEYS.ALL_TONES}
+              cookieKeySelectedOption={COOKIE_KEYS.TONE}
             />
 
             {/* Language Filter */}
@@ -241,44 +229,6 @@ const Parameters: React.FC<ParametersProps> = ({
               value={language}
               onChange={handleLanguageChange}
               cookieKeySelectedOption={COOKIE_KEYS.LANGUAGE}
-            />
-            {/* Writing Tone */}
-            <Filter
-              label="Writing Tone"
-              type="customSelect"
-              options={commonTones}
-              value={tone}
-              onChange={handleToneChange}
-              cookieKeyAllOptions={COOKIE_KEYS.ALL_TONES}
-              cookieKeySelectedOption={COOKIE_KEYS.TONE}
-            />
-
-            {/* Detail Filter */}
-            <Filter
-              label="Detail Level"
-              type="select"
-              options={commonDetailLevels}
-              value={detailLevels}
-              onChange={handleDetailLevelsChange}
-              cookieKeySelectedOption={COOKIE_KEYS.LEVELS}
-            />
-            {/* Example Filter */}
-            <Filter
-              label="Example"
-              type="select"
-              options={commonExamples}
-              value={example}
-              onChange={handleExampleChange}
-              cookieKeySelectedOption={COOKIE_KEYS.EXAMPLE}
-            />
-            {/* External Source URL Filter */}
-            <Filter
-              label="External Source URL"
-              type="select"
-              options={commonExternalURL}
-              value={externalURL}
-              onChange={handleExternalURL}
-              cookieKeySelectedOption={COOKIE_KEYS.EXTERNAL_URL}
             />
           </div>
 

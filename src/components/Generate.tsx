@@ -14,9 +14,9 @@ const Generate: React.FC = () => {
   const lastArticle = generatedArticles[generatedArticles.length - 1];
   let isCodeBlock = false;
   let codeBlockContent = "";
-  console.log("lastArticle", lastArticle);
+
   return (
-    <div className="text-text mx-auto my-8 max-w-4xl">
+    <div className="mx-auto my-8 max-w-4xl text-text">
       {lastArticle &&
         lastArticle.map((paragraph, index) => {
           if (paragraph.startsWith("```")) {

@@ -99,7 +99,7 @@ function CustomSelect({
     <div>
       <label
         htmlFor={label.toLowerCase()}
-        className="text-subtleText mb-2 block text-sm font-medium"
+        className="mb-2 block text-sm font-medium text-subtleText"
       >
         {label}
       </label>
@@ -120,7 +120,7 @@ function CustomSelect({
           </button>
 
           {isListVisible && (
-            <ul className="absolute left-0 top-0 mt-12 h-44 w-full overflow-y-scroll rounded-md border bg-white shadow-md">
+            <ul className="absolute left-0 top-0 mt-12 h-56 w-full overflow-y-scroll rounded-md border bg-white shadow-md">
               <div className="flex p-2">
                 <input
                   type="text"
@@ -132,7 +132,7 @@ function CustomSelect({
                 />
                 <button
                   onClick={handleAddOption}
-                  className="bg-elementBg text-subtleText hover:bg-hoveredElementBg active:bg-activeElementBg border-border hover:border-hoveredBorder rounded-md border p-2"
+                  className="rounded-md border border-border bg-elementBg p-2 text-subtleText hover:border-hoveredBorder hover:bg-hoveredElementBg active:bg-activeElementBg"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
