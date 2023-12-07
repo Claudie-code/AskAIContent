@@ -195,14 +195,16 @@ const Parameters: React.FC<ParametersProps> = ({
   return (
     <>
       <section
-        className={`border-subtleBorder bg-subtleBg mx-auto mt-10 max-w-4xl overflow-hidden rounded-md shadow-md transition-all dark:bg-gray-800 ${
+        className={`mx-auto mt-10 max-w-4xl overflow-hidden rounded-md border-subtleBorder bg-subtleBg shadow-md transition-all dark:bg-gray-800 ${
           isParametersOpen ? "h-auto border p-6 " : "h-0"
         } 
     `}
       >
         <div>
           <div className="flex items-center justify-between">
-            <h2 className="mb-4 text-xl font-bold">Create new Article</h2>
+            <h2 className="mb-4 text-xl font-bold">
+              Customize your preferences to find your content ideas.
+            </h2>
             <CloseButton onClick={handleCloseParameters} />
           </div>
           <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -287,7 +289,7 @@ const Parameters: React.FC<ParametersProps> = ({
               className={`m-auto mt-4 inline-block rounded-md border px-12 py-3 text-sm font-medium transition-all focus:outline-none focus:ring ${
                 loading
                   ? "cursor-not-allowed bg-gray-500"
-                  : "bg-elementBg text-subtleText hover:bg-hoveredElementBg active:bg-activeElementBg border-border hover:border-hoveredBorder"
+                  : "border-border bg-elementBg text-subtleText hover:border-hoveredBorder hover:bg-hoveredElementBg active:bg-activeElementBg"
               }`}
               disabled={loading}
             >
@@ -306,11 +308,11 @@ const Parameters: React.FC<ParametersProps> = ({
             className={`mt-4 inline-block w-full rounded-md border px-12 py-3 text-sm font-medium transition-all focus:outline-none focus:ring ${
               loading
                 ? "cursor-not-allowed bg-gray-500"
-                : "bg-elementBg text-subtleText hover:bg-hoveredElementBg active:bg-activeElementBg border-border hover:border-hoveredBorder"
+                : "border-border bg-elementBg text-subtleText hover:border-hoveredBorder hover:bg-hoveredElementBg active:bg-activeElementBg"
             }`}
             disabled={loading}
           >
-            New Article
+            Content Idea Generator
           </button>
         </div>
       )}

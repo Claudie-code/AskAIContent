@@ -55,7 +55,7 @@ const Sidebar: React.FC<SidebarProps> = ({ handleOpenParameters }) => {
             isSidebarOpen ? "justify-between" : "justify-center"
           }`}
         >
-          {isSidebarOpen ? "New Article" : ""}
+          {isSidebarOpen ? "Content Idea Generator" : ""}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="1em"

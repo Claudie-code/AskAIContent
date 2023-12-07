@@ -1,8 +1,15 @@
-import React, { createContext, useContext, ReactNode, useState } from "react";
+import Cookies from "js-cookie";
+import React, {
+  createContext,
+  useEffect,
+  useContext,
+  ReactNode,
+  useState,
+} from "react";
 
 // Définir le type pour la valeur du contexte
 interface ArticleContextType {
-  generatedArticle: string;
+  generatedArticles: string[][];
   updateGeneratedArticle: (newArticle: string) => void;
 }
 
@@ -27,13 +34,33 @@ interface ArticleProviderProps {
 export const ArticleProvider: React.FC<ArticleProviderProps> = ({
   children,
 }) => {
-  const [generatedArticle, setGeneratedArticle] = useState<string>("");
+  const [generatedArticles, setGeneratedArticles] = useState<string[][]>([]);
+
+  // Update the cookie whenever generatedArticles changes
+  useEffect(() => {
+    let cookieValue = Cookies.get("generatedArticles");
+    cookieValue = cookieValue ? JSON.parse(cookieValue) : [];
+
+    // Ensure cookieValue is an array of arrays of strings
+    const updatedArray = Array.isArray(cookieValue) ? cookieValue : [];
+
+    setGeneratedArticles(updatedArray);
+  }, []);
 
   const updateGeneratedArticle = (newArticle: string) => {
-    setGeneratedArticle(newArticle);
+    console.log("newArticle", newArticle);
+    const paragraphsNewArticle = newArticle.split("\n");
+    console.log(
+      "[...generatedArticles, paragraphsNewArticle]",
+      JSON.stringify([["test test"]]),
+    );
+    Cookies.set("generatedArticles", JSON.stringify([["test test"]]));
+    // Update the array by creating a new array with the new value
+    setGeneratedArticles((prevArray) => [...prevArray, paragraphsNewArticle]);
   };
+
   const value: ArticleContextType = {
-    generatedArticle,
+    generatedArticles,
     updateGeneratedArticle,
   };
 
