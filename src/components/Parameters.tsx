@@ -241,16 +241,16 @@ const Parameters: React.FC<ParametersProps> = ({
           <div className="m-auto flex flex-col justify-center">
             <button
               onClick={handleSubmit}
-              className={`mt-4 inline-block rounded-md border px-12 py-3 text-sm font-medium transition-all focus:outline-none focus:ring ${
+              className={`mt-8 inline-block rounded-md border px-12 py-3 text-sm font-medium transition-all focus:outline-none focus:ring ${
                 loading
                   ? "cursor-not-allowed bg-gray-500"
                   : "border-border bg-elementBg text-subtleText hover:border-hoveredBorder hover:bg-hoveredElementBg active:bg-activeElementBg"
               }`}
               disabled={loading}
             >
-              {loading ? "Generating..." : "Generate Article"}
+              {loading ? "Generating..." : "Generate"}
             </button>
-            <p className="text-gray-500">
+            <p className="text-xs text-gray-500">
               Number of attempts: {numberOfAttempts}/10
             </p>
           </div>

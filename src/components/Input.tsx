@@ -21,7 +21,7 @@ const Input: React.FC<InputProps> = ({ label, value, onChange }) => {
         type="text"
         id={label.toLowerCase()}
         name={label.toLowerCase()}
-        className="mt-1 w-full rounded-md border p-2"
+        className="w-full rounded-md border p-2"
         required
         onChange={(e) => onChange(e.target.value)}
       />

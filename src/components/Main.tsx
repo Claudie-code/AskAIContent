@@ -5,6 +5,12 @@ import Parameters from "./Parameters";
 
 const Main: React.FC = () => {
   const [isParametersOpen, setParametersOpen] = useState(true);
+  const [selectedId, setSelectedId] = useState(0);
+
+  const handleSelectedId = (id: number) => {
+    setSelectedId(id);
+  };
+
   const handleOpenParameters = () => {
     setParametersOpen(true);
   };
@@ -13,10 +19,14 @@ const Main: React.FC = () => {
     setParametersOpen(false);
   };
   return (
-    <div className="text-text flex">
+    <div className="flex text-text">
       {/* Sidebar */}
-      <Sidebar handleOpenParameters={handleOpenParameters} />
-      <div className="bg-appBg w-full p-4">
+      <Sidebar
+        handleOpenParameters={handleOpenParameters}
+        handleSelectedId={handleSelectedId}
+        selectedId={selectedId}
+      />
+      <div className="w-full bg-appBg p-4">
         <Parameters
           isParametersOpen={isParametersOpen}
           handleCloseParameters={handleCloseParameters}
@@ -24,7 +34,7 @@ const Main: React.FC = () => {
         />
 
         {/* Contenu de l'article */}
-        <Generate />
+        <Generate selectedId={selectedId} />
       </div>
     </div>
   );

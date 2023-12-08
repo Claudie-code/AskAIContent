@@ -1,42 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useArticle } from "../context/ArticleContext";
 
-interface StyledCodeBlockProps {
-  code: string;
+interface GenerateProps {
+  selectedId: number; // Ajoutez la prop selectedId en tant que nombre optionnel
 }
 
-const StyledCodeBlock: React.FC<StyledCodeBlockProps> = ({ code }) => (
-  <code className="mb-4 block rounded-md bg-gray-100 p-4">{code}</code>
-);
-
-const Generate: React.FC = () => {
+const Generate: React.FC<GenerateProps> = ({ selectedId }) => {
   const { generatedArticles } = useArticle();
-  const lastArticle = generatedArticles[generatedArticles.length - 1];
-  let isCodeBlock = false;
-  let codeBlockContent = "";
+  const [selectedArticle, setSelectedArticle] = useState<string[]>([]);
 
+  useEffect(() => {
+    setSelectedArticle(generatedArticles[generatedArticles.length - 1]);
+  }, [generatedArticles]);
+
+  useEffect(() => {
+    setSelectedArticle(generatedArticles[selectedId]);
+  }, [selectedId]);
   return (
     <div className="mx-auto my-8 max-w-4xl text-text">
-      {lastArticle &&
-        lastArticle.map((paragraph, index) => {
-          if (paragraph.startsWith("```")) {
-            isCodeBlock = true;
-            codeBlockContent = "";
-            return <StyledCodeBlock key={index} code={codeBlockContent} />;
-          } else if (isCodeBlock && paragraph.startsWith("```")) {
-            isCodeBlock = false;
-            return <StyledCodeBlock key={index} code={codeBlockContent} />;
-          } else if (isCodeBlock) {
-            codeBlockContent += `${paragraph}\n`;
-            return null;
-          } else {
-            return (
-              <p key={index} className="mb-4">
-                {paragraph}
-              </p>
-            );
-          }
-        })}
+      {selectedArticle &&
+        selectedArticle.map((paragraph, index) => (
+          <p key={index} className="mb-4">
+            {paragraph}
+          </p>
+        ))}
     </div>
   );
 };
