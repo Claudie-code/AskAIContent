@@ -34,7 +34,7 @@ const Main: React.FC = () => {
         />
 
         {/* Contenu de l'article */}
-        <Generate selectedId={selectedId} />
+        <Generate selectedId={selectedId} handleSelectedId={handleSelectedId} />
       </div>
     </div>
   );

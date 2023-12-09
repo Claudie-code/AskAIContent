@@ -128,8 +128,10 @@ const Parameters: React.FC<ParametersProps> = ({
       language,
       platform,
     };
-    if (numberOfAttempts < 10) {
-      fetch("http://localhost:3001/generate-article", {
+    const apiUrl = process.env.REACT_APP_API_URL;
+
+    if (numberOfAttempts < 10 && apiUrl) {
+      fetch(apiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -161,8 +163,6 @@ const Parameters: React.FC<ParametersProps> = ({
           }
         })
         .catch((error) => {
-          console.error("Error communicating with the server:", error.message);
-
           showAlert(`Error communicating with the server`);
         })
         .finally(() => {

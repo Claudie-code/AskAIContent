@@ -2,15 +2,21 @@ import React, { useEffect, useState } from "react";
 import { useArticle } from "../context/ArticleContext";
 
 interface GenerateProps {
-  selectedId: number; // Ajoutez la prop selectedId en tant que nombre optionnel
+  selectedId: number;
+  handleSelectedId: (id: number) => void;
 }
 
-const Generate: React.FC<GenerateProps> = ({ selectedId }) => {
+const Generate: React.FC<GenerateProps> = ({
+  selectedId,
+  handleSelectedId,
+}) => {
   const { generatedArticles } = useArticle();
   const [selectedArticle, setSelectedArticle] = useState<string[]>([]);
 
   useEffect(() => {
-    setSelectedArticle(generatedArticles[generatedArticles.length - 1]);
+    const newSelectedId = generatedArticles.length - 1;
+    setSelectedArticle(generatedArticles[newSelectedId]);
+    handleSelectedId(newSelectedId);
   }, [generatedArticles]);
 
   useEffect(() => {
