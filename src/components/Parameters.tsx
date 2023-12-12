@@ -6,11 +6,7 @@ import Loader from "./Loader";
 import Alert from "./Alert";
 import CloseButton from "./CloseButton";
 
-interface ParametersProps {
-  isParametersOpen: boolean;
-  handleCloseParameters: () => void;
-  handleOpenParameters: () => void;
-}
+interface ParametersProps {}
 
 const COOKIE_KEYS = {
   TONE: "tone",
@@ -58,11 +54,7 @@ const commonLanguages = [
 
 const commonPlatforms = ["Blog", "Youtube", "Instagram"];
 
-const Parameters: React.FC<ParametersProps> = ({
-  isParametersOpen,
-  handleCloseParameters,
-  handleOpenParameters,
-}) => {
+const Parameters: React.FC<ParametersProps> = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isAlertVisible, setAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -71,7 +63,13 @@ const Parameters: React.FC<ParametersProps> = ({
   const [platform, setPlatform] = useState<string>("");
   const [topic, setTopic] = useState<string>("");
   const [target, setTarget] = useState<string>("");
-  const { updateGeneratedArticle, numberOfAttempts } = useArticle();
+  const {
+    updateGeneratedArticle,
+    numberOfAttempts,
+    isParametersOpen,
+    handleCloseParameters,
+    handleOpenParameters,
+  } = useArticle();
   const setCookie = (key: string, value: string | number) =>
     Cookies.set(key, value.toString());
 

@@ -10,6 +10,11 @@ interface ArticleContextType {
   generatedArticles: string[][];
   updateGeneratedArticle: (newArticle: string) => void;
   numberOfAttempts: number;
+  handleOpenParameters: () => void;
+  handleCloseParameters: () => void;
+  handleSelectedId: (id: number) => void;
+  selectedId: number;
+  isParametersOpen: boolean;
 }
 
 const ArticleContext = createContext<ArticleContextType | undefined>(undefined);
@@ -38,6 +43,20 @@ export const ArticleProvider: React.FC<ArticleProviderProps> = ({
     const storedValue = localStorage.getItem("nOA");
     return storedValue ? parseInt(storedValue) : 0;
   });
+  const [isParametersOpen, setParametersOpen] = useState(true);
+  const [selectedId, setSelectedId] = useState(0);
+
+  const handleSelectedId = (id: number) => {
+    setSelectedId(id);
+  };
+
+  const handleOpenParameters = () => {
+    setParametersOpen(true);
+  };
+
+  const handleCloseParameters = () => {
+    setParametersOpen(false);
+  };
 
   useEffect(() => {
     localStorage.setItem("nOA", numberOfAttempts.toString());
@@ -61,6 +80,11 @@ export const ArticleProvider: React.FC<ArticleProviderProps> = ({
     generatedArticles,
     updateGeneratedArticle,
     numberOfAttempts,
+    handleOpenParameters,
+    handleCloseParameters,
+    handleSelectedId,
+    selectedId,
+    isParametersOpen,
   };
 
   return (

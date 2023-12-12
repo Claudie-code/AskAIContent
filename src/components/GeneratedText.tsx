@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useArticle } from "../context/ArticleContext";
 
-interface GeneratedTextProps {
-  selectedId: number;
-  handleSelectedId: (id: number) => void;
-}
+interface GeneratedTextProps {}
 
-const GeneratedText: React.FC<GeneratedTextProps> = ({
-  selectedId,
-  handleSelectedId,
-}) => {
-  const { generatedArticles } = useArticle();
+const GeneratedText: React.FC<GeneratedTextProps> = () => {
+  const { generatedArticles, selectedId, handleSelectedId } = useArticle();
   const [selectedArticle, setSelectedArticle] = useState<string[]>([]);
 
   useEffect(() => {
