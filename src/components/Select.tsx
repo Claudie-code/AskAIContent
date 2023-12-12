@@ -1,5 +1,4 @@
-// Select.tsx
-import React, { useEffect } from "react";
+import React from "react";
 
 interface SelectProps {
   label: string;
@@ -13,7 +12,7 @@ const Select: React.FC<SelectProps> = ({ label, options, value, onChange }) => {
     <div>
       <label
         htmlFor={label.toLowerCase()}
-        className="text-subtleText mb-2 block text-sm font-medium"
+        className="mb-2 block text-sm font-medium text-subtleText"
       >
         {label}
       </label>
@@ -24,6 +23,9 @@ const Select: React.FC<SelectProps> = ({ label, options, value, onChange }) => {
         onChange={(e) => onChange(e.target.value)}
         className="w-full rounded-md border p-2"
       >
+        <option value="" disabled hidden>
+          Select {label.toLowerCase()}
+        </option>
         {options.map((option, index) => (
           <option key={index} value={option}>
             {option}

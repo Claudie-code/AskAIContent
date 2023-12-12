@@ -42,7 +42,10 @@ function CustomSelect({
   const handleAddOption = () => {
     if (
       newOption.trim() !== "" &&
-      !allOptions.some((tone) => tone.title === newOption.trim())
+      !allOptions.some(
+        (tone) =>
+          tone.title.trim().toLowerCase() === newOption.trim().toLowerCase(),
+      )
     ) {
       const newToneObject = { title: newOption.trim(), custom: true };
       setAllOptions((prevOptions) => [...prevOptions, newToneObject]);

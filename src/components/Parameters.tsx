@@ -154,9 +154,6 @@ const Parameters: React.FC<ParametersProps> = ({
             updateGeneratedArticle(generatedArticle);
             handleCloseParameters();
           } else {
-            console.error(
-              "Server response does not contain the expected data.",
-            );
             showAlert(
               "Error: Server response does not contain the expected data.",
             );
@@ -219,7 +216,7 @@ const Parameters: React.FC<ParametersProps> = ({
             <Filter
               label="Content Approach"
               type="customSelect"
-              options={commonTones}
+              objetcOptions={commonTones}
               value={tone}
               onChange={handleToneChange}
               cookieKeyAllOptions={COOKIE_KEYS.ALL_TONES}

@@ -12,8 +12,9 @@ interface Option {
 
 interface FilterProps {
   label: string;
-  type: "input" | "select" | "customSelect";
-  options?: string[] | Option[];
+  type: string;
+  options?: string[];
+  objetcOptions?: Option[];
   value: string;
   onChange: (value: string) => void;
   cookieKeyAllOptions?: string;
@@ -24,6 +25,7 @@ const Filter: React.FC<FilterProps> = ({
   label,
   type,
   options,
+  objetcOptions,
   value,
   onChange,
   cookieKeyAllOptions,
@@ -34,38 +36,31 @@ const Filter: React.FC<FilterProps> = ({
     Cookies.set(key, value.toString());
 
   useEffect(() => {
-    const storeOption = getCookie(cookieKeySelectedOption) || value;
+    const storeOption = getCookie(cookieKeySelectedOption) ?? value;
     onChange(storeOption);
   }, []);
 
-  switch (type) {
-    case "input":
-      return <Input label={label} value={value} onChange={onChange} />;
-    case "select":
-      return (
-        <Select
-          label={label}
-          value={value as string}
-          options={options as string[]}
-          onChange={onChange}
-        />
-      );
-    case "customSelect":
-      return (
-        <CustomSelect
-          label={label}
-          value={value as string}
-          options={options as Option[]}
-          onChange={onChange}
-          cookieKeySelectedOption={cookieKeySelectedOption}
-          cookieKeyAllOptions={cookieKeyAllOptions as string}
-          setCookie={setCookie}
-          getCookie={getCookie}
-        />
-      );
-    default:
-      throw new Error(`Invalid type: ${type}`);
-  }
+  return type === "select" && options ? (
+    <Select
+      label={label}
+      value={value as string}
+      options={options}
+      onChange={onChange}
+    />
+  ) : type === "customSelect" && objetcOptions ? (
+    <CustomSelect
+      label={label}
+      value={value as string}
+      options={objetcOptions}
+      onChange={onChange}
+      cookieKeySelectedOption={cookieKeySelectedOption}
+      cookieKeyAllOptions={cookieKeyAllOptions as string}
+      setCookie={setCookie}
+      getCookie={getCookie}
+    />
+  ) : type === "input" ? (
+    <Input label={label} value={value} onChange={onChange} />
+  ) : null;
 };
 
 export default Filter;

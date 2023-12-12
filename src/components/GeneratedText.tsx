@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useArticle } from "../context/ArticleContext";
 
-interface GenerateProps {
+interface GeneratedTextProps {
   selectedId: number;
   handleSelectedId: (id: number) => void;
 }
 
-const Generate: React.FC<GenerateProps> = ({
+const GeneratedText: React.FC<GeneratedTextProps> = ({
   selectedId,
   handleSelectedId,
 }) => {
@@ -34,4 +34,4 @@ const Generate: React.FC<GenerateProps> = ({
   );
 };
 
-export default Generate;
+export default GeneratedText;

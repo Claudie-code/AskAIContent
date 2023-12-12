@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Sidebar from "./SideBar";
-import Generate from "./Generate";
+import GeneratedText from "./GeneratedText";
 import Parameters from "./Parameters";
 
 const Main: React.FC = () => {
@@ -27,14 +27,18 @@ const Main: React.FC = () => {
         selectedId={selectedId}
       />
       <div className="w-full bg-appBg p-4">
+        {/* Parameters */}
         <Parameters
           isParametersOpen={isParametersOpen}
           handleCloseParameters={handleCloseParameters}
           handleOpenParameters={handleOpenParameters}
         />
 
-        {/* Contenu de l'article */}
-        <Generate selectedId={selectedId} handleSelectedId={handleSelectedId} />
+        {/* Text */}
+        <GeneratedText
+          selectedId={selectedId}
+          handleSelectedId={handleSelectedId}
+        />
       </div>
     </div>
   );
