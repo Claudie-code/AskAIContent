@@ -131,7 +131,7 @@ const Parameters: React.FC<ParametersProps> = ({
     const apiUrl = process.env.REACT_APP_API_URL;
 
     if (numberOfAttempts < 10 && apiUrl) {
-      fetch(apiUrl, {
+      fetch(apiUrl + "/generate-article", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
