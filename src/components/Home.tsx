@@ -4,9 +4,9 @@ interface HomeProps {}
 
 const Home: React.FC<HomeProps> = () => {
   return (
-    <div className="m-auto my-8 flex max-w-4xl flex-col gap-8 px-6 lg:gap-16">
+    <div className="m-auto flex max-w-4xl flex-col gap-8 pt-20 lg:gap-16">
       <div className="flex flex-col items-center gap-4 text-center">
-        <h1 className="font-caption bg-gradient-to-r from-cyan-400 to-cyan-900 bg-clip-text text-8xl font-bold text-transparent">
+        <h1 className="font-caption bg-gradient-to-r from-cyan-400 to-cyan-900 bg-clip-text text-4xl font-bold text-transparent sm:text-5xl lg:text-6xl">
           AskAIContent
         </h1>
         <h2 className="max-w-xl text-2xl font-thin">

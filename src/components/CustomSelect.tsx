@@ -109,7 +109,7 @@ function CustomSelect({
       <div className="relative flex flex-wrap items-center gap-2">
         <div ref={inputRef} className="w-full">
           <button
-            className="flex w-full cursor-pointer justify-between rounded-md border bg-white p-2"
+            className="flex w-full cursor-pointer items-center justify-between rounded-md border bg-white p-2"
             onClick={() => toggleListVisibility(!isListVisible)}
           >
             <p>{value}</p>

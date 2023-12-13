@@ -169,7 +169,7 @@ const Parameters: React.FC<ParametersProps> = () => {
   };
 
   return (
-    <div className="m-auto max-w-4xl">
+    <div className="m-auto max-w-4xl pt-10">
       <section
         className={`rounded-md border-subtleBorder bg-subtleBg shadow-md transition-all dark:bg-gray-800 ${
           isParametersOpen ? "h-auto border p-6 " : "h-0 overflow-hidden"
