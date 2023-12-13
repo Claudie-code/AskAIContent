@@ -117,6 +117,11 @@ const Parameters: React.FC<ParametersProps> = () => {
   };
 
   const handleSubmit = () => {
+    // Check if required fields are empty
+    if (!topic || !tone || !target || !language || !platform) {
+      showAlert("Please fill in all required fields.");
+      return;
+    }
     setLoading(true);
 
     const dataToSend = {
@@ -169,7 +174,7 @@ const Parameters: React.FC<ParametersProps> = () => {
   };
 
   return (
-    <div className="m-auto max-w-4xl pt-10">
+    <div className="m-auto max-w-4xl pt-12">
       <section
         className={`rounded-md border-subtleBorder bg-subtleBg shadow-md transition-all dark:bg-gray-800 ${
           isParametersOpen ? "h-auto border p-6 " : "h-0 overflow-hidden"

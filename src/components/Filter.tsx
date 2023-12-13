@@ -40,27 +40,38 @@ const Filter: React.FC<FilterProps> = ({
     onChange(storeOption);
   }, []);
 
-  return type === "select" && options ? (
-    <Select
-      label={label}
-      value={value as string}
-      options={options}
-      onChange={onChange}
-    />
-  ) : type === "customSelect" && objetcOptions ? (
-    <CustomSelect
-      label={label}
-      value={value as string}
-      options={objetcOptions}
-      onChange={onChange}
-      cookieKeySelectedOption={cookieKeySelectedOption}
-      cookieKeyAllOptions={cookieKeyAllOptions as string}
-      setCookie={setCookie}
-      getCookie={getCookie}
-    />
-  ) : type === "input" ? (
-    <Input label={label} value={value} onChange={onChange} />
-  ) : null;
+  return (
+    <div>
+      <label
+        htmlFor={label.toLowerCase()}
+        className="mb-2 block text-sm font-medium text-subtleText"
+      >
+        {label} *
+      </label>
+
+      {type === "select" && options ? (
+        <Select
+          label={label}
+          value={value as string}
+          options={options}
+          onChange={onChange}
+        />
+      ) : type === "customSelect" && objetcOptions ? (
+        <CustomSelect
+          label={label}
+          value={value as string}
+          options={objetcOptions}
+          onChange={onChange}
+          cookieKeySelectedOption={cookieKeySelectedOption}
+          cookieKeyAllOptions={cookieKeyAllOptions as string}
+          setCookie={setCookie}
+          getCookie={getCookie}
+        />
+      ) : type === "input" ? (
+        <Input label={label} value={value} onChange={onChange} />
+      ) : null}
+    </div>
+  );
 };
 
 export default Filter;

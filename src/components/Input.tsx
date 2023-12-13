@@ -8,24 +8,16 @@ interface InputProps {
 
 const Input: React.FC<InputProps> = ({ label, value, onChange }) => {
   return (
-    <div>
-      <label
-        htmlFor={label.toLowerCase()}
-        className="mb-2 block text-sm font-medium text-subtleText"
-      >
-        {label}
-      </label>
-      <input
-        value={value}
-        type="text"
-        id={label.toLowerCase()}
-        name={label.toLowerCase()}
-        className="w-full rounded-md border p-2"
-        placeholder={`Enter ${label.toLowerCase()}`}
-        required
-        onChange={(e) => onChange(e.target.value)}
-      />
-    </div>
+    <input
+      value={value}
+      type="text"
+      id={label.toLowerCase()}
+      name={label.toLowerCase()}
+      className="w-full rounded-md border p-2"
+      placeholder={`Enter ${label.toLowerCase()}`}
+      required
+      onChange={(e) => onChange(e.target.value)}
+    />
   );
 };
 
