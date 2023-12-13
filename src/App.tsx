@@ -11,7 +11,7 @@ const App: React.FC = () => {
       <div className="flex text-text">
         {/* Sidebar */}
         <Sidebar />
-        <div className="h-screen w-full bg-appBg p-4">
+        <div className="min-h-screen w-full bg-appBg p-4">
           <Routes>
             <Route path="/" Component={Home} />
             <Route path="/generator" Component={Generator} />
