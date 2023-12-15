@@ -10,7 +10,8 @@ const CloseButton: React.FC<CloseButtonProps> = ({
   return (
     <button
       onClick={onClick}
-      className="hover:bg-elementBg active:bg-activeElementBg group relative flex items-center justify-center rounded px-2 py-1.5 font-bold transition-all"
+      className="group relative flex items-center justify-center rounded px-2 py-1.5 font-bold transition-all hover:bg-elementBg active:bg-activeElementBg"
+      aria-label="close menu"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

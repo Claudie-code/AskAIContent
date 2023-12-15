@@ -15,7 +15,7 @@ const Home: React.FC<HomeProps> = () => {
         </h2>
         <a
           href="/generator"
-          className="mt-4 inline-block rounded-md border border-border bg-elementBg px-12 py-3 text-sm font-medium text-subtleText 
+          className="mt-4 inline-block rounded-md border border-border bg-elementBg px-12 py-3 text-sm font-medium text-text 
             transition-all hover:border-hoveredBorder hover:bg-hoveredElementBg focus:outline-none focus:ring active:bg-activeElementBg"
         >
           Get started

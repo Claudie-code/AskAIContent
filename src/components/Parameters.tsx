@@ -244,7 +244,7 @@ const Parameters: React.FC<ParametersProps> = () => {
               className={`mt-8 inline-block rounded-md border px-12 py-3 text-sm font-medium transition-all focus:outline-none focus:ring ${
                 loading
                   ? "cursor-not-allowed bg-gray-500"
-                  : "border-border bg-elementBg text-subtleText hover:border-hoveredBorder hover:bg-hoveredElementBg active:bg-activeElementBg"
+                  : "border-border bg-elementBg text-text hover:border-hoveredBorder hover:bg-hoveredElementBg active:bg-activeElementBg"
               }`}
               disabled={loading}
             >
@@ -266,7 +266,7 @@ const Parameters: React.FC<ParametersProps> = () => {
             className={`inline-block w-full rounded-md border px-12 py-3 text-sm font-medium transition-all focus:outline-none focus:ring ${
               loading
                 ? "cursor-not-allowed bg-gray-500"
-                : "border-border bg-elementBg text-subtleText hover:border-hoveredBorder hover:bg-hoveredElementBg active:bg-activeElementBg"
+                : "border-border bg-elementBg text-text hover:border-hoveredBorder hover:bg-hoveredElementBg active:bg-activeElementBg"
             }`}
             disabled={loading}
           >

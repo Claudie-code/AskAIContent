@@ -24,7 +24,11 @@ const MenuButton: React.FC<BurgerButtonProps> = ({
       {isSidebarOpen ? (
         <CloseButton onClick={handleCloseSidebar} />
       ) : (
-        <button onClick={handleOpenSidebar} className={iconStyle}>
+        <button
+          onClick={handleOpenSidebar}
+          className={iconStyle}
+          aria-label="open menu"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="1em"
@@ -95,6 +99,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
             className={`${iconStyle} mb-4 text-text ${
               isSidebarOpen ? "justify-between" : "justify-center"
             }`}
+            aria-label="go to Content Idea Generator page"
           >
             {isSidebarOpen ? "Content Idea Generator" : ""}
             <svg
